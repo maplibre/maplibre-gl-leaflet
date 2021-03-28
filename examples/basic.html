@@ -16,16 +16,16 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
-    <!-- Mapbox GL -->
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css" rel='stylesheet' />
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js"></script>
+    <!-- Maplibre GL -->
+    <link href="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.css" rel='stylesheet' />
+    <script src="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
 
 </head>
 
 <body>
 <div id="map"></div>
 
-<script src="../leaflet-mapbox-gl.js"></script>
+<script src="../leaflet-maplibre-gl.js"></script>
 <script>
 var map = L.map('map').setView([38.912753, -77.032194], 15);
 
@@ -34,7 +34,7 @@ L.marker([38.912753, -77.032194])
     .addTo(map)
     .openPopup();
 
-var gl = L.mapboxGL({
+var gl = L.maplibreGL({
     accessToken: 'no-token',
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
     style: 'https://api.maptiler.com/maps/topo/style.json?key=gbetYLSD5vR8MdtZ88AQ'

@@ -16,13 +16,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
-    <!-- Mapbox GL -->
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css" rel='stylesheet' />
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js"></script>
+    <!-- Maplibre GL -->
+    <link href="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.css" rel='stylesheet' />
+    <script src="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
   </head>
   <body>
   <div id="map"></div>
-  <script src="../leaflet-mapbox-gl.js"></script>
+  <script src="../leaflet-maplibre-gl.js"></script>
   <script>
   var leafletMap = L.map('map').setView([38.912753, -77.032194], 2);
 
@@ -31,7 +31,7 @@
     .addTo(leafletMap)
     .openPopup();
 
-  var gl = L.mapboxGL({
+  var gl = L.maplibreGL({
     padding: 0.1,
     accessToken: 'no-token',
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
@@ -39,25 +39,25 @@
     interactive: true
   }).addTo(leafletMap);
 
-  var mapboxMap = gl.getMapboxMap();
+  var maplibreMap = gl.getMaplibreMap();
 
-  mapboxMap.on('load', () => {
-    console.log('MAPBOX map loaded');
+  maplibreMap.on('load', () => {
+    console.log('MAPLIBRE map loaded');
 
-    // let's see events on mapbox map
-    mapboxMap.on('mousemove', () => { console.log('MAPBOX mousemove') });
-    mapboxMap.on('mouseenter', () => { console.log('MAPBOX mouseenter') });
-    mapboxMap.on('mouseout', () => { console.log('MAPBOX mouseout') });
-    mapboxMap.on('mouseleave', () => { console.log('MAPBOX mouseleave') });
-    mapboxMap.on('mouseover', () => { console.log('MAPBOX mouseover') });
+    // let's see events on maplibre map
+    maplibreMap.on('mousemove', () => { console.log('MAPLIBRE mousemove') });
+    maplibreMap.on('mouseenter', () => { console.log('MAPLIBRE mouseenter') });
+    maplibreMap.on('mouseout', () => { console.log('MAPLIBRE mouseout') });
+    maplibreMap.on('mouseleave', () => { console.log('MAPLIBRE mouseleave') });
+    maplibreMap.on('mouseover', () => { console.log('MAPLIBRE mouseover') });
 
     // let's add some layer and fire events on it
 
-    mapboxMap.addSource('states', {
+    maplibreMap.addSource('states', {
       'type': 'geojson',
       'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/us_states.geojson'
     });
-    mapboxMap.addLayer({
+    maplibreMap.addLayer({
       'id': 'state-fills',
       'type': 'fill',
       'source': 'states',
@@ -68,10 +68,10 @@
       }
     });
 
-    mapboxMap.on('mouseenter', 'state-fills', (e) => {console.log('state-fills mouseenter', e) });
-    mapboxMap.on('mousemove', 'state-fills', (e) => {console.log('state-fills mousemove', e) });
-    mapboxMap.on('mouseout', 'state-fills', (e) => {console.log('state-fills mouseout', e) });
-    mapboxMap.on('mouseleave', 'state-fills', (e) => {console.log('state-fills mouseleave', e) });
+    maplibreMap.on('mouseenter', 'state-fills', (e) => {console.log('state-fills mouseenter', e) });
+    maplibreMap.on('mousemove', 'state-fills', (e) => {console.log('state-fills mousemove', e) });
+    maplibreMap.on('mouseout', 'state-fills', (e) => {console.log('state-fills mouseout', e) });
+    maplibreMap.on('mouseleave', 'state-fills', (e) => {console.log('state-fills mouseleave', e) });
 
   });
 

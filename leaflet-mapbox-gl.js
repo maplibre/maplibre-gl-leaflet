@@ -1,23 +1,23 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD
-        define(['leaflet', 'mapbox-gl'], factory);
+        define(['leaflet', 'maplibre-gl'], factory);
     } else if (typeof exports === 'object') {
         // Node, CommonJS-like
-        module.exports = factory(require('leaflet'), require('mapbox-gl'));
+        module.exports = factory(require('leaflet'), require('maplibre-gl'));
     } else {
         // Browser globals (root is window)
-        root.returnExports = factory(window.L, window.mapboxgl);
+        root.returnExports = factory(window.L, window.maplibregl);
     }
-}(this, function (L, mapboxgl) {
-    L.MapboxGL = L.Layer.extend({
+}(this, function (L, maplibregl) {
+    L.MaplibreGL = L.Layer.extend({
             options: {
             updateInterval: 32,
             // How much to extend the overlay view (relative to map size)
             // e.g. 0.1 would be 10% of map view in each direction
             padding: 0.1,
             // whether or not to register the mouse and keyboard
-            // events on the mapbox overlay
+            // events on the maplibre overlay
             interactive: false,
             // set the tilepane as the default pane to draw gl tiles
             pane: 'tilePane'
@@ -25,10 +25,6 @@
 
         initialize: function (options) {
             L.setOptions(this, options);
-
-            if (options.accessToken) {
-                mapboxgl.accessToken = options.accessToken;
-            }
 
             // setup throttling the update event when panning
             this._throttledUpdate = L.Util.throttle(this._update, this.options.updateInterval, this);
@@ -74,7 +70,7 @@
             };
         },
 
-        getMapboxMap: function () {
+        getMaplibreMap: function () {
             return this._glMap;
         },
 
@@ -127,7 +123,7 @@
                 attributionControl: false
             });
 
-            this._glMap = new mapboxgl.Map(options);
+            this._glMap = new maplibregl.Map(options);
 
             // allow GL base map to pan beyond min/max latitudes
             this._glMap.transform.latRange = null;
@@ -195,7 +191,7 @@
             // calling setView directly causes sync issues because it uses requestAnimFrame
 
             var tr = gl.transform;
-            tr.center = mapboxgl.LngLat.convert([center.lng, center.lat]);
+            tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
             tr.zoom = this._map.getZoom() - 1;
         },
 
@@ -277,9 +273,8 @@
         }
     });
 
-    L.mapboxGL = function (options) {
-        return new L.MapboxGL(options);
+    L.maplibreGL = function (options) {
+        return new L.MaplibreGL(options);
     };
 
 }));
-

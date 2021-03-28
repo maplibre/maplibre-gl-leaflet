@@ -1,20 +1,20 @@
 {
-  "name": "mapbox-gl-leaflet",
+  "name": "maplibre-gl-leaflet",
   "version": "0.0.14",
-  "description": "binding from mapbox gl to the leaflet api",
-  "main": "leaflet-mapbox-gl.js",
+  "description": "binding from maplibre gl to the leaflet api",
+  "main": "leaflet-maplibre-gl.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "jshint leaflet-mapbox-gl.js"
+    "test": "jshint leaflet-maplibre-gl.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mapbox/mapbox-gl-leaflet.git"
+    "url": "https://github.com/codespree/maplibre-gl-leaflet.git"
   },
   "keywords": [
-    "mapbox",
+    "maplibre",
     "gl",
     "leaflet",
     "leafletjs",
@@ -23,9 +23,9 @@
   "files": [],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mapbox/mapbox-gl-leaflet/issues"
+    "url": "https://github.com/codespree/maplibre-gl-leaflet/issues"
   },
-  "homepage": "https://github.com/mapbox/mapbox-gl-leaflet",
+  "homepage": "https://github.com/codespree/maplibre-gl-leaflet",
   "devDependencies": {
     "gh-release": "^3.5.0",
     "jshint": "^2.10.1"
