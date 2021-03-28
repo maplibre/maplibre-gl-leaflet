@@ -34,11 +34,11 @@ gl.getMaplibreMap().addSource({...})
 ```
 
 ## Live examples
-[Basic example](http://rawgit.com/codespree/maplibre-gl-leaflet/master/examples/basic.html)
+[Basic example](https://raw.githack.com/codespree/maplibre-gl-leaflet/master/examples/basic.html)
 
-[Cluster example](http://rawgit.com/codespree/maplibre-gl-leaflet/master/examples/cluster.html)
+[Cluster example](https://raw.githack.com/codespree/maplibre-gl-leaflet/master/examples/cluster.html)
 
-[Map events example](http://rawgit.com/codespree/maplibre-gl-leaflet/master/examples/events.html)
+[Map events example](https://raw.githack.com/codespree/maplibre-gl-leaflet/master/examples/events.html)
 
 Code for these examples is hosted in the [examples folder](https://github.com/codespree/maplibre-gl-leaflet/tree/master/examples)
 
