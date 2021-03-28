@@ -54,6 +54,7 @@ Add a script tag referencing maplibre-gl-leaflet after adding leaflet and maplib
 <script src="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
 
 <script src="leaflet-maplibre-gl.js"></script>
+```
 
 ## Motivation
 This project makes it possible to easily add a maplibre-gl-js layer in your Leaflet map. When using maplibre-gl-leaflet, you won't be able to use some of the maplibre-gl-js features.
