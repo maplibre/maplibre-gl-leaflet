@@ -7,8 +7,8 @@
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
   <!-- Maplibre GL -->
-  <link href="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.css" rel='stylesheet' />
-  <script src="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css" rel='stylesheet' />
+  <script src="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js"></script>
   <script src="../leaflet-maplibre-gl.js"></script>
   <style>
     html, body, #map {
@@ -26,7 +26,7 @@
     var map = new L.Map('map');
 		var gl = L.maplibreGL({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-      style: 'https://api.maptiler.com/maps/basic/style.json?key=gbetYLSD5vR8MdtZ88AQ'
+      style: 'https://api.maptiler.com/maps/basic/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
     }).addTo(map);
 
 		var	bounds = new L.LatLngBounds(
