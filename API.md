@@ -1,11 +1,11 @@
 ## `L.maplibreGL(options)`
 
-Create a new Maplibre GL layer in a Leaflet-compatible wrapper.
+Create a new MapLibre GL layer in a Leaflet-compatible wrapper.
 
 <span class='leaflet icon'>_Extends_: `L.Class`</span>
 
-`options` is an object of options. All options given are passed to a Maplibre GL `Map` object,
-so consult [the Maplibre GL .Map documentation](https://maplibre.org)
+`options` is an object of options. All options given are passed to a MapLibre GL `Map` object,
+so consult [the MapLibre GL .Map documentation](https://maplibre.org/maplibre-gl-js-docs/api/map/)
 for the full range.
 
 | Option | Value | Description |
