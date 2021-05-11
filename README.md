@@ -1,11 +1,7 @@
-**Note: this tool is experimental and is not actively supported by Mapbox. For support, please open an issue in this repository.**
+## MapLibre GL Leaflet
 
-## Maplibre GL Leaflet
-
-[![build status](https://secure.travis-ci.org/codespree/maplibre-gl-leaflet.png)](http://travis-ci.org/codespree/maplibre-gl-leaflet)
-
-This is a binding from [Maplibre GL JS](https://maplibre.org) to the familiar
-[Leaflet](http://leafletjs.com/) API.
+This is a binding from [MapLibre GL JS](https://maplibre.org) to the familiar
+[Leaflet](http://leafletjs.com/) API. It was originally developed for Mapbox (https://github.com/mapbox/mapbox-gl-leaflet) and was migrated to MapLibre after Mapbox changed changed its license.
 
 ## Code example
 ```javascript
@@ -34,13 +30,13 @@ gl.getMaplibreMap().addSource({...})
 ```
 
 ## Live examples
-[Basic example](https://raw.githack.com/codespree/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/basic.html)
+[Basic example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/basic.html)
 
-[Cluster example](https://raw.githack.com/codespree/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/cluster.html)
+[Cluster example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/cluster.html)
 
-[Map events example](https://raw.githack.com/codespree/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/events.html)
+[Map events example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/events.html)
 
-Code for these examples is hosted in the [examples folder](https://github.com/codespree/maplibre-gl-leaflet/tree/master/examples)
+Code for these examples is hosted in the [examples folder](https://github.com/maplibre/maplibre-gl-leaflet/tree/main/examples)
 
 ## Installation
 Add a script tag referencing maplibre-gl-leaflet after adding leaflet and maplibre-gl-js in your website:
@@ -49,9 +45,9 @@ Add a script tag referencing maplibre-gl-leaflet after adding leaflet and maplib
 <link rel="stylesheet" href="leaflet.css" />
 <script src="leaflet.js"></script>
 
-<!-- Maplibre GL -->
-<link href="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.css" rel='stylesheet' />
-<script src="https://media.seventhsense.ai/maplibre-gl-js/v1.14.0/maplibre-gl.js"></script>
+<!-- MapLibre GL -->
+<link href="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css" rel='stylesheet' />
+<script src="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js"></script>
 
 <script src="leaflet-maplibre-gl.js"></script>
 ```
@@ -64,13 +60,13 @@ Here are the main differences between a "pure" maplibre-gl-js map and a Leaflet 
 
 On the bright side, the maplibre-gl-leaflet binding will allow you to use all the leaflet features and plugins.
 
-If you only need the maplibre-gl-js features ([adding a map with a mapbox-style, adding a GeoJSON, etc.](https://www.mapbox.com/mapbox-gl-js/examples/)), you are probably better off using it directly.
+If you only need the maplibre-gl-js features ([adding a map with a mapbox-style, adding a GeoJSON, etc.](https://maplibre.org/maplibre-gl-js-docs/example/)), you are probably better off using it directly.
 
 ## API Reference
 [API Reference](API.md)
 
 ## Bug Reports & Feature Requests
-Please use the [issue tracker](https://github.com/codespree/maplibre-gl-leaflet/issues) to report any bugs or file feature requests.
+Please use the [issue tracker](https://github.com/maplibre/maplibre-gl-leaflet/issues) to report any bugs or file feature requests.
 You can fork this [jsfiddle template](https://jsfiddle.net/fnicollet/9w9er53v/) to reproduce a bug, then share the URL of your fork in the GitHub issue.
 
 ## Licence
