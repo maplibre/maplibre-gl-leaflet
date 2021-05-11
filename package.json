@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codespree/maplibre-gl-leaflet.git"
+    "url": "https://github.com/maplibre/maplibre-gl-leaflet.git"
   },
   "keywords": [
     "maplibre",
@@ -23,9 +23,9 @@
   "files": [],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/codespree/maplibre-gl-leaflet/issues"
+    "url": "https://github.com/maplibre/maplibre-gl-leaflet/issues"
   },
-  "homepage": "https://github.com/codespree/maplibre-gl-leaflet",
+  "homepage": "https://github.com/maplibre/maplibre-gl-leaflet",
   "devDependencies": {
     "gh-release": "^3.5.0",
     "jshint": "^2.10.1"
