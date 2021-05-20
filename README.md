@@ -70,4 +70,4 @@ Please use the [issue tracker](https://github.com/maplibre/maplibre-gl-leaflet/i
 You can fork this [jsfiddle template](https://jsfiddle.net/fnicollet/9w9er53v/) to reproduce a bug, then share the URL of your fork in the GitHub issue.
 
 ## Licence
-ISC © [Mapbox](https://github.com/mapbox)
+ISC © [MapLibre](https://github.com/maplibre) © [Mapbox](https://github.com/mapbox)
