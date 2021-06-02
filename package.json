@@ -32,6 +32,6 @@
   },
   "peerDependencies": {
     "leaflet": "^1.0.0",
-    "mapbox-gl": "*"
+    "maplibre-gl": "^1.14.0"
   }
 }
