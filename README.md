@@ -1,7 +1,7 @@
 ## MapLibre GL Leaflet
 
 This is a binding from [MapLibre GL JS](https://maplibre.org) to the familiar
-[Leaflet](http://leafletjs.com/) API. It was originally developed for Mapbox (https://github.com/mapbox/mapbox-gl-leaflet) and was migrated to MapLibre after Mapbox changed changed its license.
+[Leaflet](http://leafletjs.com/) API. It was originally developed for Mapbox (https://github.com/mapbox/mapbox-gl-leaflet) and was migrated to MapLibre after Mapbox changed its license.
 
 ## Code example
 ```javascript
