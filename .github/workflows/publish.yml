@@ -22,6 +22,6 @@ jobs:
 
       - name: Publish
         run: |
-          npm publish --access=public --non-interactive --dry-run
+          npm publish --access=public --non-interactive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
