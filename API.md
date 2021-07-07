@@ -37,3 +37,7 @@ Returns layer size in pixels including padding.
 ### `layer.getBounds(): L.LatLngBounds`
 
 Returns layer bounds including padding.
+
+### `layer.getPaneName(): string`
+
+Returns the pane name set in options if it is a valid pane, defaults to tilePane.
