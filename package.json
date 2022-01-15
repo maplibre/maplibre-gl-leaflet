@@ -20,7 +20,6 @@
     "leafletjs",
     "maps"
   ],
-  "files": [],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/maplibre/maplibre-gl-leaflet/issues"
