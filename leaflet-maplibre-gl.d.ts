@@ -1,9 +1,12 @@
 import * as L from 'leaflet';
 import { Map, MapboxOptions } from 'maplibre-gl';
 
+
 declare module 'leaflet' {
+    type LeafletMaplibreGLOptions = Omit<MapboxOptions, "container">;
+
     class MaplibreGL extends L.Layer {
-        constructor(options: MapboxOptions);
+        constructor(options: LeafletMaplibreGLOptions);
         getMaplibreMap(): Map
         getCanvas(): HTMLCanvasElement
         getSize(): L.Point
@@ -12,6 +15,6 @@ declare module 'leaflet' {
         getPaneName(): string
     }
 
-    function maplibreGL(options: MapboxOptions): MaplibreGL;
+    function maplibreGL(options: LeafletMaplibreGLOptions): MaplibreGL;
 
 }
