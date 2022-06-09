@@ -8,7 +8,7 @@
     } else {
         // Browser globals (root is window)
         root = typeof globalThis !== 'undefined' ? globalThis : root || self;
-        root.returnExports = factory(window.L, window.maplibregl);
+        root.returnExports = factory(root.L, root.maplibregl);
     }
 }(this, function (L, maplibregl) {
     L.MaplibreGL = L.Layer.extend({
