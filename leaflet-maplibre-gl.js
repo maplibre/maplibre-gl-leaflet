@@ -7,6 +7,7 @@
         module.exports = factory(require('leaflet'), require('maplibre-gl'));
     } else {
         // Browser globals (root is window)
+        root = typeof globalThis !== 'undefined' ? globalThis : root || self;
         root.returnExports = factory(window.L, window.maplibregl);
     }
 }(this, function (L, maplibregl) {
