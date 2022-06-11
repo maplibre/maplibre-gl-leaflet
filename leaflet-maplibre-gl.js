@@ -7,10 +7,9 @@
         module.exports = factory(require('leaflet'), require('maplibre-gl'));
     } else {
         // Browser globals (root is window)
-        root = typeof globalThis !== 'undefined' ? globalThis : root || self;
         root.returnExports = factory(root.L, root.maplibregl);
     }
-}(this, function (L, maplibregl) {
+}(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maplibregl) {
     L.MaplibreGL = L.Layer.extend({
             options: {
             updateInterval: 32,
