@@ -30,11 +30,11 @@ gl.getMaplibreMap().addSource({...})
 ```
 
 ## Live examples
-[Basic example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/basic.html)
+[Basic example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/main/examples/basic.html)
 
-[Cluster example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/cluster.html)
+[Cluster example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/main/examples/cluster.html)
 
-[Map events example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/aa06e210ab8f8ea136407a8f1481b4b8077c3d5a/examples/events.html)
+[Map events example](https://raw.githack.com/maplibre/maplibre-gl-leaflet/main/examples/events.html)
 
 Code for these examples is hosted in the [examples folder](https://github.com/maplibre/maplibre-gl-leaflet/tree/main/examples)
 
@@ -42,14 +42,14 @@ Code for these examples is hosted in the [examples folder](https://github.com/ma
 Add a script tag referencing maplibre-gl-leaflet after adding leaflet and maplibre-gl-js in your website:
 ```html
 <!-- Leaflet -->
-<link rel="stylesheet" href="leaflet.css" />
-<script src="leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
 
-<!-- MapLibre GL -->
-<link href="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css" rel='stylesheet' />
-<script src="https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js"></script>
+<!-- Maplibre GL -->
+<link href="https://unpkg.com/maplibre-gl@2.2.1/dist/maplibre-gl.css" rel='stylesheet' />
+<script src="https://unpkg.com/maplibre-gl@2.2.1/dist/maplibre-gl.js"></script>
 
-<script src="leaflet-maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.17/leaflet-maplibre-gl.js"></script>
 ```
 
 ## Motivation
