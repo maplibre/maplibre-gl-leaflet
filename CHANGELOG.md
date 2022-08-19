@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- Fix [#29](https://github.com/maplibre/maplibre-gl-leaflet/issues/29) - layer is mis-aligned with map when panning the map off screen ([#31](https://github.com/maplibre/maplibre-gl-leaflet/pulls/31))
+
 ## 0.0.15 - 2021-07-08
 
 ### Added
