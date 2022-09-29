@@ -99,9 +99,23 @@
         getPaneName: function () {
             return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane'; 
         },
+
+        // Changes the zIndex of the layer.
+        setZIndex: function (zIndex) {
+          this.options.zIndex = zIndex;
+          this._updateZIndex();
+          return this;
+        },
+
+        _updateZIndex: function () {
+          if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
+            this._container.style.zIndex = this.options.zIndex;
+          }
+        },
         
         _initContainer: function () {
             var container = this._container = L.DomUtil.create('div', 'leaflet-gl-layer');
+            this._updateZIndex();
 
             var size = this.getSize();
             var offset = this._map.getSize().multiplyBy(this.options.padding);
