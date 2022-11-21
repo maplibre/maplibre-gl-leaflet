@@ -30,7 +30,7 @@
     "jshint": "^2.10.1"
   },
   "peerDependencies": {
-    "leaflet": "^1.0.0",
+    "leaflet": "^1.9.3",
     "maplibre-gl": "^2.4.0"
   },
   "types": "leaflet-maplibre-gl.d.ts"
