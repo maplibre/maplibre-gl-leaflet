@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/maplibre/maplibre-gl-leaflet",
   "devDependencies": {
-    "gh-release": "^3.5.0",
+    "gh-release": "^6.0.4",
     "jshint": "^2.10.1"
   },
   "peerDependencies": {
