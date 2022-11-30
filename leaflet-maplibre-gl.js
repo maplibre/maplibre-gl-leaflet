@@ -99,6 +99,10 @@
         getPaneName: function () {
             return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane'; 
         },
+
+        _roundPoint: function(p) {
+            return {x: Math.round(p.x), y: Math.round(p.y)}
+        },
         
         _initContainer: function () {
             var container = this._container = L.DomUtil.create('div', 'leaflet-gl-layer');
@@ -110,7 +114,7 @@
 
             var topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
 
-            L.DomUtil.setPosition(container, topLeft);
+            L.DomUtil.setPosition(container, this._roundPoint(topLeft));
         },
 
         _initGL: function () {
@@ -164,7 +168,7 @@
                 offset = this._map.getSize().multiplyBy(this.options.padding),
                 topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
 
-            L.DomUtil.setPosition(container, topLeft);
+            L.DomUtil.setPosition(container, this._roundPoint(topLeft));
 
             this._transformGL(gl);
 
