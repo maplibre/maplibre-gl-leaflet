@@ -1,9 +1,8 @@
 import * as L from 'leaflet';
-import { Map, MapOptions } from 'maplibre-gl';
-
+import { Map, MapOptions as MaplibreGLOptions } from 'maplibre-gl';
 
 declare module 'leaflet' {
-    type LeafletMaplibreGLOptions = Omit<MapOptions, "container">;
+    type LeafletMaplibreGLOptions = Omit<MaplibreGLOptions, "container">;
 
     class MaplibreGL extends L.Layer {
         constructor(options: LeafletMaplibreGLOptions);
@@ -17,4 +16,5 @@ declare module 'leaflet' {
 
     function maplibreGL(options: LeafletMaplibreGLOptions): MaplibreGL;
 
+    export default L
 }
