@@ -1,7 +1,7 @@
 {
   "name": "@maplibre/maplibre-gl-leaflet",
-  "version": "0.0.19",
-  "description": "binding from maplibre gl to the leaflet api",
+  "version": "0.0.20",
+  "description": "Bindings to allow MapLibre GL JS to be embed the Leaflet API.",
   "main": "leaflet-maplibre-gl.js",
   "directories": {
     "example": "examples"
