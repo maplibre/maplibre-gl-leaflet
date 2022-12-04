@@ -37,7 +37,7 @@
 
             var paneName = this.getPaneName();
             map.getPane(paneName).appendChild(this._container);
-            
+
             this._initGL();
 
             this._offset = this._map.containerPointToLayerPoint([0, 0]);
@@ -54,7 +54,7 @@
             }
             var paneName = this.getPaneName();
             map.getPane(paneName).removeChild(this._container);
-            
+
             this._glMap.remove();
             this._glMap = null;
         },
@@ -94,16 +94,16 @@
         getContainer: function () {
             return this._container;
         },
-        
+
         // returns the pane name set in options if it is a valid pane, defaults to tilePane
         getPaneName: function () {
-            return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane'; 
+            return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane';
         },
 
         _roundPoint: function(p) {
-            return {x: Math.round(p.x), y: Math.round(p.y)}
+            return {x: Math.round(p.x), y: Math.round(p.y)};
         },
-        
+
         _initContainer: function () {
             var container = this._container = L.DomUtil.create('div', 'leaflet-gl-layer');
 
@@ -154,7 +154,7 @@
             }
         },
 
-        _update: function (e) {
+        _update: function (_) {
             // update the offset so we can correct for it later when we zoom
             this._offset = this._map.containerPointToLayerPoint([0, 0]);
 
@@ -202,7 +202,7 @@
         },
 
         // update the map constantly during a pinch zoom
-        _pinchZoom: function (e) {
+        _pinchZoom: function (_) {
             this._glMap.jumpTo({
                 zoom: this._map.getZoom() - 1,
                 center: this._map.getCenter()
@@ -231,7 +231,7 @@
             );
         },
 
-        _zoomStart: function (e) {
+        _zoomStart: function (_) {
             this._zooming = true;
         },
 
@@ -250,7 +250,7 @@
             this._update();
         },
 
-        _transitionEnd: function (e) {
+        _transitionEnd: function (_) {
             L.Util.requestAnimFrame(function () {
                 var zoom = this._map.getZoom();
                 var center = this._map.getCenter();
