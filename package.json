@@ -1,37 +1,38 @@
 {
-  "name": "@maplibre/maplibre-gl-leaflet",
-  "version": "0.0.20",
-  "description": "Bindings to allow MapLibre GL JS to be embedded in the Leaflet API.",
-  "main": "leaflet-maplibre-gl.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "test": "jshint leaflet-maplibre-gl.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/maplibre/maplibre-gl-leaflet.git"
-  },
-  "keywords": [
-    "maplibre",
-    "gl",
-    "leaflet",
-    "leafletjs",
-    "maps"
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/maplibre/maplibre-gl-leaflet/issues"
-  },
-  "homepage": "https://github.com/maplibre/maplibre-gl-leaflet",
-  "devDependencies": {
-    "gh-release": "^3.5.0",
-    "jshint": "^2.10.1"
-  },
-  "peerDependencies": {
-    "leaflet": "^1.9.3",
-    "maplibre-gl": "^2.4.0"
-  },
-  "types": "leaflet-maplibre-gl.d.ts"
+    "name": "@maplibre/maplibre-gl-leaflet",
+    "version": "0.0.20",
+    "description": "Bindings to allow MapLibre GL JS to be embedded in the Leaflet API.",
+    "main": "leaflet-maplibre-gl.js",
+    "directories": {
+        "example": "examples"
+    },
+    "scripts": {
+        "test": "jshint leaflet-maplibre-gl.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/maplibre/maplibre-gl-leaflet.git"
+    },
+    "keywords": [
+        "maplibre",
+        "gl",
+        "leaflet",
+        "leafletjs",
+        "maps"
+    ],
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/maplibre/maplibre-gl-leaflet/issues"
+    },
+    "homepage": "https://github.com/maplibre/maplibre-gl-leaflet",
+    "devDependencies": {
+        "gh-release": "^3.5.0",
+        "jshint": "^2.10.1"
+    },
+    "peerDependencies": {
+        "leaflet": "^1.9.3",
+        "@types/leaflet": "^1.9.0",
+        "maplibre-gl": "^2.4.0"
+    },
+    "types": "leaflet-maplibre-gl.d.ts"
 }

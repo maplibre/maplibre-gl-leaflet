@@ -1,20 +1,18 @@
-import * as L from 'leaflet';
-import { Map as MaplibreGLMap, MapOptions as MaplibreGLOptions } from 'maplibre-gl';
+import { Layer, Point, LatLngBounds } from 'leaflet';
+import { Map, MapOptions } from 'maplibre-gl';
 
 declare module 'leaflet' {
-    type LeafletMaplibreGLOptions = Omit<MaplibreGLOptions, "container">;
+    type LeafletMaplibreGLOptions = Omit<MapOptions, "container">;
 
-    class MaplibreGL extends L.Layer {
+    class MaplibreGL extends Layer {
         constructor(options: LeafletMaplibreGLOptions);
-        getMaplibreMap(): MaplibreGLMap
+        getMaplibreMap(): Map
         getCanvas(): HTMLCanvasElement
-        getSize(): L.Point
-        getBounds(): L.LatLngBounds
+        getSize(): Point
+        getBounds(): LatLngBounds
         getContainer(): HTMLDivElement
         getPaneName(): string
     }
 
     function maplibreGL(options: LeafletMaplibreGLOptions): MaplibreGL;
-
-    export default L
 }

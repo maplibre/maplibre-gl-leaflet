@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fix TypeScript compilation failures by using MapLibre `MapOptions` instead of Leaflet `MapOptions` ([#40](https://github.com/maplibre/maplibre-gl-leaflet/issues/40))
+- Depend directly on `@types/leaflet` to fix TypeScript ambiguities.
 
 ## 0.0.19 - 2022-11-30
 
