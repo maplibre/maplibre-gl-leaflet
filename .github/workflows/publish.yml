@@ -16,7 +16,7 @@ jobs:
       - name: Use Node.js 10 x64
         uses: actions/setup-node@v2
         with:
-          node-version: 10
+          node-version: 18
           architecture: x64
           registry-url: 'https://registry.npmjs.org'
 
