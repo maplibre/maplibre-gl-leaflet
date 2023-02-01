@@ -37,7 +37,7 @@
 
             var paneName = this.getPaneName();
             map.getPane(paneName).appendChild(this._container);
-            
+
             this._initGL();
 
             this._offset = this._map.containerPointToLayerPoint([0, 0]);
@@ -54,7 +54,7 @@
             }
             var paneName = this.getPaneName();
             map.getPane(paneName).removeChild(this._container);
-            
+
             this._glMap.remove();
             this._glMap = null;
         },
@@ -94,16 +94,16 @@
         getContainer: function () {
             return this._container;
         },
-        
+
         // returns the pane name set in options if it is a valid pane, defaults to tilePane
         getPaneName: function () {
-            return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane'; 
+            return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane';
         },
 
         _roundPoint: function(p) {
-            return {x: Math.round(p.x), y: Math.round(p.y)}
+            return {x: Math.round(p.x), y: Math.round(p.y)};
         },
-        
+
         _initContainer: function () {
             var container = this._container = L.DomUtil.create('div', 'leaflet-gl-layer');
 

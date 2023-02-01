@@ -1,0 +1,27 @@
+name: test
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 18 x64
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          architecture: x64
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install
+        run: |
+          npm ci
+
+      - name: Test
+        run: |
+          npm run test
