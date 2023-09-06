@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- Add `mapbox-gl-js v3.x.x` to allowed versions in peerDependencies.
+
+### Fixed
+
 - Fix [#29](https://github.com/maplibre/maplibre-gl-leaflet/issues/29) - layer is mis-aligned with map when panning the map off screen ([#31](https://github.com/maplibre/maplibre-gl-leaflet/pulls/31))
 
 ## 0.0.19 - 2022-11-30
