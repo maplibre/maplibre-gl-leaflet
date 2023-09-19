@@ -49,7 +49,7 @@ Add a script tag referencing maplibre-gl-leaflet after adding leaflet and maplib
 <link href="https://unpkg.com/maplibre-gl@2.2.1/dist/maplibre-gl.css" rel='stylesheet' />
 <script src="https://unpkg.com/maplibre-gl@2.2.1/dist/maplibre-gl.js"></script>
 
-<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.17/leaflet-maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
 ```
 
 ## Motivation
