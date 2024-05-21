@@ -1,13 +1,13 @@
 import * as L from 'leaflet';
-import { Map, MapOptions } from 'maplibre-gl';
+import { Map as LibreGLMap, MapOptions as LibreGLMapOptions } from 'maplibre-gl';
 
 
 declare module 'leaflet' {
-    type LeafletMaplibreGLOptions = Omit<MapOptions, "container">;
+    type LeafletMaplibreGLOptions = Omit<LibreGLMapOptions, "container">;
 
     class MaplibreGL extends L.Layer {
         constructor(options: LeafletMaplibreGLOptions);
-        getMaplibreMap(): Map
+        getMaplibreMap(): LibreGLMap
         getCanvas(): HTMLCanvasElement
         getSize(): L.Point
         getBounds(): L.LatLngBounds
