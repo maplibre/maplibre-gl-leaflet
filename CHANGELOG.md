@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.22 - 2024-07-08
+
+### Fixed
+
+- Fix [#29](https://github.com/maplibre/maplibre-gl-leaflet/issues/58) - added missing guard for empty object
+
 ## 0.0.20 - 2023-09-19
 
 ### Added
