@@ -157,7 +157,7 @@
         _update: function (e) {
             if (!this._map) {
                 return;
-              }
+            }
             // update the offset so we can correct for it later when we zoom
             this._offset = this._map.containerPointToLayerPoint([0, 0]);
 
