@@ -11,7 +11,7 @@
     }
 }(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maplibregl) {
     L.MaplibreGL = L.Layer.extend({
-            options: {
+        options: {
             updateInterval: 32,
             // How much to extend the overlay view (relative to map size)
             // e.g. 0.1 would be 10% of map view in each direction
@@ -100,8 +100,8 @@
             return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane';
         },
 
-        _roundPoint: function(p) {
-            return {x: Math.round(p.x), y: Math.round(p.y)};
+        _roundPoint: function (p) {
+            return { x: Math.round(p.x), y: Math.round(p.y) };
         },
 
         _initContainer: function () {
@@ -109,7 +109,7 @@
 
             var size = this.getSize();
             var offset = this._map.getSize().multiplyBy(this.options.padding);
-            container.style.width  = size.x + 'px';
+            container.style.width = size.x + 'px';
             container.style.height = size.y + 'px';
 
             var topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
@@ -174,23 +174,6 @@
             L.DomUtil.setPosition(container, this._roundPoint(topLeft));
 
             this._transformGL(gl);
-
-            if (gl.transform.width !== size.x || gl.transform.height !== size.y) {
-                container.style.width  = size.x + 'px';
-                container.style.height = size.y + 'px';
-                if (gl._resize !== null && gl._resize !== undefined){
-                    gl._resize();
-                } else {
-                    gl.resize();
-                }
-            } else {
-                // older versions of mapbox-gl surfaced update publicly
-                if (gl._update !== null && gl._update !== undefined){
-                    gl._update();
-                } else {
-                    gl.update();
-                }
-            }
         },
 
         _transformGL: function (gl) {
@@ -199,9 +182,20 @@
             // gl.setView([center.lat, center.lng], this._map.getZoom() - 1, 0);
             // calling setView directly causes sync issues because it uses requestAnimFrame
 
-            var tr = gl.transform;
-            tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
-            tr.zoom = this._map.getZoom() - 1;
+            let tr = gl._getTransformForUpdate(); // .clone() ?
+
+            if (tr.setCenter) {
+                // maplibre 5.0.0 and higher:
+                tr.setCenter(maplibregl.LngLat.convert([center.lng, center.lat]));
+                tr.setZoom(this._map.getZoom() - 1);
+                gl.transform.apply(tr);
+            } else {
+                // maplibre < 5.0.0
+                tr = gl.transform;
+                tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
+                tr.zoom = this._map.getZoom() - 1;
+            }
+            gl._fireMoveEvents();
         },
 
         // update the map constantly during a pinch zoom
@@ -223,7 +217,7 @@
             var topLeft = this._map.project(e.center, e.zoom)
                 ._subtract(viewHalf)
                 ._add(this._map._getMapPanePos()
-                .add(padding))._round();
+                    .add(padding))._round();
             var offset = this._map.project(this._map.getBounds().getNorthWest(), e.zoom)
                 ._subtract(topLeft);
 
