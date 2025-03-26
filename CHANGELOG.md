@@ -4,12 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## 0.1.0
 
-### Fixed
+### Fixed - 2025-03-24
 
 - Fix [#64](https://github.com/maplibre/maplibre-gl-leaflet/issues/64) to allow this library to work with MapLibre GL JS v5.0.0. ([#66](https://github.com/maplibre/maplibre-gl-leaflet/pull/66))
-
 
 ## 0.0.22 - 2024-07-08
 
