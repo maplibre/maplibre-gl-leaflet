@@ -182,7 +182,7 @@
             // gl.setView([center.lat, center.lng], this._map.getZoom() - 1, 0);
             // calling setView directly causes sync issues because it uses requestAnimFrame
 
-            let tr = gl._getTransformForUpdate(); // .clone() ?
+            var tr = gl._getTransformForUpdate(); // .clone() ?
 
             if (tr.setCenter) {
                 // maplibre 5.0.0 and higher:
