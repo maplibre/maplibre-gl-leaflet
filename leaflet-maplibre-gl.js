@@ -70,6 +70,30 @@
             };
         },
 
+        // https://leafletjs.com/reference.html#layer-getattribution
+        getAttribution: function () {
+            // Return custom attribution if specified in options
+            if (this.options.attributionControl) {
+                return this.options.attributionControl.customAttribution;
+            }
+
+            // Gather attributions from MapLibre styles
+            if (this._glMap && this.options.attributionControl !== false) {
+                const style = this._glMap.getStyle();
+                if (style?.sources) {
+                    return Object.keys(style.sources)
+                        .map((sourceId) => {
+                            const source = this._glMap.getSource(sourceId);
+                            return (typeof source?.attribution === 'string') ? source.attribution.trim() : null;
+                        })
+                        .filter(Boolean) // Remove null/undefined values
+                        .join(', ');
+                }
+            }
+
+            return '';
+        },
+
         getMaplibreMap: function () {
             return this._glMap;
         },
@@ -128,6 +152,13 @@
             });
 
             this._glMap = new maplibregl.Map(options);
+
+            this._glMap.on('load', () => {
+                // Force attribution update
+                if (this._map && this._map.attributionControl) {
+                    this._map.attributionControl.addAttribution(this.getAttribution());
+                }
+            });
 
             // allow GL base map to pan beyond min/max latitudes
             this._glMap.transform.latRange = null;

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Added
+
+- Add attribution handling to the Leaflet layer based on the `attributionControl` option and the source's `attribution` property
+
 ## 0.1.0
 
 ### Fixed - 2025-03-24
