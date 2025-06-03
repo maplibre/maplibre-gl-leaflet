@@ -205,6 +205,16 @@
             L.DomUtil.setPosition(container, this._roundPoint(topLeft));
 
             this._transformGL(gl);
+
+            if (gl.transform.width !== size.x || gl.transform.height !== size.y) {
+            container.style.width = size.x + 'px';
+            container.style.height = size.y + 'px';
+            if (gl._resize !== null && gl._resize !== undefined) {
+            gl._resize();
+            } else {
+            gl.resize();
+            }
+          }
         },
 
         _transformGL: function (gl) {
