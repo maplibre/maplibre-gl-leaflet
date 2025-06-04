@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>OS Vector Tile | Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@5.3.0/dist/maplibre-gl.js"></script>
+    <script src="../leaflet-maplibre-gl.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .leaflet-control-resizer-corner-e,
+        .leaflet-control-resizer-corner-s,
+        .leaflet-control-resizer-corner-se {
+            z-index: 1000;
+            position: absolute;
+        }
+
+        .leaflet-control-resizer-corner-e {
+            right: 0;
+            height: 100%;
+        }
+
+        .leaflet-control-resizer-corner-s {
+            bottom: 0;
+            width: 100%;
+        }
+
+        .leaflet-control-resizer-corner-se {
+            right: 0;
+            bottom: 0;
+        }
+
+
+        .leaflet-control-resizer-transparent {
+            background-color: transparent;
+            user-select: none;
+            transition: 0.5s;
+        }
+
+        .leaflet-control-resizer-transparent::after {
+            border-color: transparent;
+            transition: 0.5s;
+        }
+
+        .leaflet-control-resizer-opaque,
+        .leaflet-control-resizer-transparent:hover,
+        .leaflet-control-resizer-transparent-fakedhover {
+            background-color: rgba(255, 250, 170, 0.8);
+        }
+
+        .leaflet-control-resizer-opaque::after,
+        .leaflet-control-resizer-transparent:hover::after,
+        .leaflet-control-resizer-transparent-fakedhover::after {
+            border-color: rgba(85, 85, 85, 0.9);
+        }
+
+        .leaflet-control-resizer-e {
+            width: 25px;
+            height: 50px;
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+            cursor: e-resize;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .leaflet-control-resizer-s {
+            width: 50px;
+            height: 25px;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            cursor: s-resize;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+        }
+
+        .leaflet-control-resizer-se {
+            width: 35px;
+            height: 35px;
+            border-top-left-radius: 35px;
+            cursor: se-resize;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+        }
+
+        .leaflet-control-resizer-e::after,
+        .leaflet-control-resizer-s::after,
+        .leaflet-control-resizer-se::after {
+            content: '';
+            position: absolute;
+            z-index: 999;
+            border-width: 1px;
+            bottom: 20%;
+            right: 20%;
+        }
+
+        .leaflet-control-resizer-e::after,
+        .leaflet-control-resizer-s::after {
+            width: 60%;
+            height: 60%;
+
+        }
+
+        .leaflet-control-resizer-se::after {
+            width: 40%;
+            height: 40%;
+        }
+
+        .leaflet-control-resizer-e::after,
+        .leaflet-control-resizer-se::after {
+            border-right-style: solid;
+        }
+
+        .leaflet-control-resizer-s:after,
+        .leaflet-control-resizer-se::after {
+            border-bottom-style: solid;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map" style="width:50%; height:50%"></div>
+
+
+<script>
+    var L;
+    (function (L) {
+        if (typeof L === 'undefined') {
+            throw new Error('Leaflet must be included first');
+        }
+
+        L.Control.Resizer = L.Control.extend({
+            options: {
+                direction: 'e',  // valid values e, s, se
+                onlyOnHover: false,
+                updateAlways: true,
+                pan: false,
+            },
+
+            _END: {
+                mousedown: 'mouseup',
+                touchstart: 'touchend',
+                pointerdown: 'touchend',
+                MSPointerDown: 'touchend'
+            },
+
+            _MOVE: {
+                mousedown: 'mousemove',
+                touchstart: 'touchmove',
+                pointerdown: 'touchmove',
+                MSPointerDown: 'touchmove'
+            },
+
+            initialize: function (options) {
+                L.Util.setOptions(this, options);
+                this._initialOffsetX = 0;
+                this._initialOffsetY = 0;
+                this.options.position = 'leaflet-control-resizer-corner-' + this.options.direction;
+                this.enable();
+            },
+
+            enable: function () {
+                this._enabled = true;
+                return this;
+            },
+
+            disable: function () {
+                this._enabled = false;
+                return this;
+            },
+
+            onAdd: function (map) {
+                this._prepareLocation(map);
+
+                var className = 'leaflet-control-resizer';
+                var classNameTransp = className + (this.options.onlyOnHover ? '-transparent' : '-opaque');
+                var classNameLoc = className + '-' + this.options.direction;
+                this._container = L.DomUtil.create('div',
+                    className + ' ' + classNameTransp + ' ' + classNameLoc,
+                    map.getContainer());
+                var container = this._container;
+
+                L.DomEvent.on(container, 'mousedown mouseup click touchstart drag', L.DomEvent.stopPropagation);
+
+                /* IE11 seems to process events in the wrong order, so the only way to prevent map movement while dragging the
+                 * slider is to disable map dragging when the cursor enters the slider (by the time the mousedown event fires
+                 * it's too late becuase the event seems to go to the map first, which results in any subsequent motion
+                 * resulting in map movement even after map.dragging.disable() is called.
+                 */
+                /*
+                L.DomEvent.on(container, 'mouseenter', function (e) { map.dragging.disable(); });
+                L.DomEvent.on(container, 'mouseleave', function (e) { map.dragging.enable(); });
+                */
+
+                L.DomEvent.on(container, 'mousedown touchstart', this._initResize, this);
+
+                return this._container;
+            },
+
+            onRemove: function (map) {
+                L.DomEvent.off(this._container, 'mousedown touchstart', this._initResize, this);
+                L.DomEvent.off(this._container, 'mousedown mouseup click touchstart drag', L.DomEvent.stopPropagation);
+            },
+
+            fakeHover: function (ms) {
+                var className = 'leaflet-control-resizer-transparent-fakedhover';
+                var cont = this._container;
+                L.DomUtil.addClass(cont, className);
+                setTimeout(function () {
+                    L.DomUtil.removeClass(cont, className);
+                }, ms | 1000);
+            },
+
+            _prepareLocation: function (map) {
+                var corners = map._controlCorners;
+                var l = 'leaflet-control-resizer-corner-' + this.options.direction;
+                var container = map._controlContainer;
+
+                corners[l] = L.DomUtil.create('div', l, container);
+            },
+
+            _initResize: function (e) {
+                if (e._simulated || !this._enabled) {
+                    return;
+                }
+
+                if (this._started) return;
+                this._started = true;
+                this._moved = false;
+
+                var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e)
+
+                L.DomUtil.disableImageDrag();
+                L.DomUtil.disableTextSelection();
+
+                this.fire('down', e);
+
+                var mapCont = this._map.getContainer();
+                this._initialOffsetX = mapCont.offsetWidth + mapCont.offsetLeft - first.clientX;
+                this._initialOffsetY = mapCont.offsetHeight + mapCont.offsetTop - first.clientY;
+
+                L.DomEvent.on(document, this._END[e.type], this._stopResizing, this);
+                L.DomEvent.on(this._container, this._END[e.type], this._stopResizing, this);
+
+                L.DomEvent.on(document, this._MOVE[e.type], this._duringResizing, this);
+            },
+
+            _duringResizing: function (e) {
+                if (e._simulated) {
+                    return;
+                }
+
+                var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e)
+
+                L.DomEvent.preventDefault(e);
+
+                if (!this._moved) {
+                    this.fire('dragstart', e);
+                }
+                this.fire('predrag', e);
+
+                var mapCont = this._map.getContainer();
+                if (this.options.direction.indexOf('e') >= 0) {
+                    mapCont.style.width = (first.clientX - mapCont.offsetLeft + this._initialOffsetX) + 'px';
+                    this._moved = true;
+                }
+                if (this.options.direction.indexOf('s') >= 0) {
+                    mapCont.style.height = (first.clientY - mapCont.offsetTop + this._initialOffsetY) + 'px';
+                    this._moved = true;
+                }
+                this._moved = true;
+
+                if (this.options.updateAlways) {
+                    this._map.invalidateSize({pan: this.options.pan});
+                }
+
+                this.fire('drag', e);
+            },
+
+            _stopResizing: function (e) {
+                if (e._simulated) {
+                    return;
+                }
+
+                for (var i in this._MOVE) {
+                    L.DomEvent.off(document, this._MOVE[i], this._duringResizing, this);
+
+                    L.DomEvent.off(document, this._END[i], this._stopResizing, this);
+                    L.DomEvent.off(this._container, this._END[i], this._stopResizing, this);
+                }
+
+                this._map.invalidateSize({pan: this.options.pan});
+
+                L.DomUtil.enableImageDrag();
+                L.DomUtil.enableTextSelection();
+                this._started = false;
+                this.fire('dragend', e);
+            }
+
+        });
+
+        L.Control.Resizer.include(L.Evented.prototype);
+
+        L.control.resizer = function (options) {
+            return new L.Control.Resizer(options);
+        };
+    })(L);
+    // Initialize the map.
+    var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "Map data &copy; <a href=\"https://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a>"
+    });
+
+    // Load and display vector tile layer on the map.
+
+    var vector = L.maplibreGL({
+        style: 'https://demotiles.maplibre.org/style.json'
+    });
+    const mapOptions = {
+        minZoom: 7,
+        maxZoom: 19,
+        center: [54.425, -2.968],
+        zoom: 14,
+        maxBounds: [
+            [49.528423, -10.76418],
+            [61.331151, 1.9134116]
+        ],
+        attributionControl: false,
+        layers: [osm]
+    };
+
+    const map = L.map('map', mapOptions);
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "OpenStreetMap.Vector": vector
+    };
+    L.control.layers(baseMaps).addTo(map);
+
+    L.control.resizer({direction: 'se'}).addTo(map);
+
+
+</script>
+
+</body>
+</html>

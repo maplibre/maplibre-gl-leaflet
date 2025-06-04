@@ -125,20 +125,24 @@
         },
 
         _roundPoint: function (p) {
-            return { x: Math.round(p.x), y: Math.round(p.y) };
+            return {x: Math.round(p.x), y: Math.round(p.y)};
         },
 
         _initContainer: function () {
             var container = this._container = L.DomUtil.create('div', 'leaflet-gl-layer');
+            this._resizeContainer();
 
-            var size = this.getSize();
             var offset = this._map.getSize().multiplyBy(this.options.padding);
-            container.style.width = size.x + 'px';
-            container.style.height = size.y + 'px';
 
             var topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
 
             L.DomUtil.setPosition(container, this._roundPoint(topLeft));
+        },
+
+        _resizeContainer: function () {
+            var size = this.getSize();
+            this._container.style.width = size.x + 'px';
+            this._container.style.height = size.y + 'px';
         },
 
         _initGL: function () {
@@ -196,8 +200,7 @@
                 return;
             }
 
-            var size = this.getSize(),
-                container = this._container,
+            var container = this._container,
                 gl = this._glMap,
                 offset = this._map.getSize().multiplyBy(this.options.padding),
                 topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
@@ -226,6 +229,7 @@
                 tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
                 tr.zoom = this._map.getZoom() - 1;
             }
+
             gl._fireMoveEvents();
         },
 
@@ -285,6 +289,7 @@
                 var offset = this._map.latLngToContainerPoint(
                     this._map.getBounds().getNorthWest()
                 );
+                this._resizeContainer()
 
                 // reset the scale and offset
                 L.DomUtil.setTransform(this._glMap._actualCanvas, offset, 1);
