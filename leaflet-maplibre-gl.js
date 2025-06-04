@@ -78,13 +78,14 @@
             }
 
             // Gather attributions from MapLibre styles
-            if (this._glMap && this.options.attributionControl !== false) {
-                const style = this._glMap.getStyle();
-                if (style?.sources) {
+            var map = this._glMap;
+            if (map && this.options.attributionControl !== false) {
+                var style = map.getStyle();
+                if (style && style.sources) {
                     return Object.keys(style.sources)
-                        .map((sourceId) => {
-                            const source = this._glMap.getSource(sourceId);
-                            return (typeof source?.attribution === 'string') ? source.attribution.trim() : null;
+                        .map(function (sourceId) {
+                            var source = map.getSource(sourceId);
+                            return (source && typeof source.attribution === 'string') ? source.attribution.trim() : null;
                         })
                         .filter(Boolean) // Remove null/undefined values
                         .join(', ');
@@ -157,10 +158,12 @@
 
             this._glMap = new maplibregl.Map(options);
 
-            this._glMap.on('load', () => {
+            var _map = this._map;
+            var _getAttribution = this.getAttribution.bind(this);
+            this._glMap.on('load', function () {
                 // Force attribution update
-                if (this._map && this._map.attributionControl) {
-                    this._map.attributionControl.addAttribution(this.getAttribution());
+                if (_map && _map.attributionControl) {
+                    _map.attributionControl.addAttribution(_getAttribution);
                 }
             });
 
@@ -289,7 +292,7 @@
                 var offset = this._map.latLngToContainerPoint(
                     this._map.getBounds().getNorthWest()
                 );
-                this._resizeContainer()
+                this._resizeContainer();
 
                 // reset the scale and offset
                 L.DomUtil.setTransform(this._glMap._actualCanvas, offset, 1);
