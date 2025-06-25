@@ -168,8 +168,21 @@
             });
 
             // allow GL base map to pan beyond min/max latitudes
-            this._glMap.transform.latRange = null;
-            this._glMap.transform.maxValidLatitude = Infinity;
+            // Defensively check if properties are writable before setting them,
+            // ensuring compatibility with both old and new versions of MapLibre GL JS.
+            const transformProto = Object.getPrototypeOf(this._glMap.transform);
+
+            const latRangeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'latRange');
+            if (!latRangeDescriptor || latRangeDescriptor.set || latRangeDescriptor.writable) {
+                this._glMap.transform.latRange = null;
+            }
+
+            // Although this property is obsolete in modern versions, we apply the same
+            // defensive check for robust backward compatibility.
+            const maxValidLatitudeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'maxValidLatitude');
+            if (!maxValidLatitudeDescriptor || maxValidLatitudeDescriptor.set || maxValidLatitudeDescriptor.writable) {
+                this._glMap.transform.maxValidLatitude = Infinity;
+            }
 
             this._transformGL(this._glMap);
 
