@@ -217,7 +217,6 @@
           latRangeDescriptor.set ||
           latRangeDescriptor.writable
         ) {
-          console.log("MapLibre v3 setting latRange to null");
           this._glMap.transform.latRange = null;
         }
 
@@ -233,7 +232,6 @@
           maxValidLatitudeDescriptor.set ||
           maxValidLatitudeDescriptor.writable
         ) {
-          console.log("MapLibre v4 setting maxValidLatitude to Infinity");
           this._glMap.transform.maxValidLatitude = Infinity;
         }
 
@@ -243,7 +241,6 @@
           this._glMap.transform._helper &&
           this._glMap.transform._helper._latRange
         ) {
-          console.log("MapLibre v5 setting _latRange to [-Infinity, Infinity]");
           this._glMap.transform._helper._latRange = [-Infinity, Infinity];
         }
 
