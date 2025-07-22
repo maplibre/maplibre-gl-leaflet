@@ -20,8 +20,8 @@
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
   <!-- Maplibre GL -->
-  <link href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" rel='stylesheet' />
-  <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" rel='stylesheet' />
+  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
 
 </head>
 
@@ -30,12 +30,15 @@
 
   <script src="../leaflet-maplibre-gl.js"></script>
   <script>
-    var map = L.map('map', {}).setView([0, 0], 2);
+    var map = L.map('map').setView([0, 0], 2);
 
     L.marker([179, 0])
       .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
       .addTo(map)
-      .openPopup();
+
+    L.marker([0, 0])
+      .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
+      .addTo(map)
 
     var gl = L.maplibreGL({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
