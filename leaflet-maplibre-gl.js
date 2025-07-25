@@ -218,7 +218,7 @@
             // hide the map until it is loaded, to prevent flickering
             // this is a workaround for when the map is zoomed out beyond the
             // min/max latitudes, which causes the map to flicker until it is interacted with
-            // after the map renders for the frist time, we set the opacity to 1
+            // after the map renders for the first time, we set the opacity to 1
             canvas.style.opacity = 0;
 
             if (this.options.interactive) {
