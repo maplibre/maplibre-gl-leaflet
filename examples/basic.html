@@ -17,8 +17,8 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <!-- Maplibre GL -->
-    <link href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" rel='stylesheet' />
-    <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" rel='stylesheet' />
+    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
 
 </head>
 
@@ -27,7 +27,10 @@
 
 <script src="../leaflet-maplibre-gl.js"></script>
 <script>
-var map = L.map('map').setView([38.912753, -77.032194], 15);
+var map = L.map('map', {
+  maxBounds: [[180, -540], [-180, 540]], // restrict bounds to avoid max latitude issues with MapLibre GL
+  maxBoundsViscosity: 1, // make the max bounds "solid" so users cannot pan past them
+}).setView([38.912753, -77.032194], 15);
 
 L.marker([38.912753, -77.032194])
     .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
@@ -36,7 +39,7 @@ L.marker([38.912753, -77.032194])
 
 var gl = L.maplibreGL({
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    style: 'https://api.maptiler.com/maps/topo/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+    style: 'https://demotiles.maplibre.org/style.json'
 }).addTo(map);
 
 </script>

@@ -169,6 +169,15 @@
                 }
             });
 
+            // once the map renders for the first time, we update the map
+            // this is necessary to ensure the map is rendered correctly
+            // when the map starts zoomed out beyond the min/max latitudes
+            this._glMap.once("render", () => {
+                this._update();
+                this._glMap.triggerRepaint();
+                canvas.style.opacity = 1;
+            });
+
             // allow GL base map to pan beyond min/max latitudes
             // Defensively check if properties are writable before setting them,
             // ensuring compatibility with both old and new versions of MapLibre GL JS.
@@ -186,6 +195,13 @@
                 this._glMap.transform.maxValidLatitude = Infinity;
             }
 
+
+            // check for the existence of _helper and _latRange in MapLibre
+            // this supports MapLibre v5
+            if (this._glMap.transform._helper && this._glMap.transform._helper._latRange) {
+                this._glMap.transform._helper._latRange = [-Infinity, Infinity];
+            }
+
             this._transformGL(this._glMap);
 
             if (this._glMap._canvas.canvas) {
@@ -195,10 +211,18 @@
                 this._glMap._actualCanvas = this._glMap._canvas;
             }
 
+
             // treat child <canvas> element like L.ImageOverlay
             var canvas = this._glMap._actualCanvas;
             L.DomUtil.addClass(canvas, 'leaflet-image-layer');
             L.DomUtil.addClass(canvas, 'leaflet-zoom-animated');
+
+            // hide the map until it is loaded, to prevent flickering
+            // this is a workaround for when the map is zoomed out beyond the
+            // min/max latitudes, which causes the map to flicker until it is interacted with
+            // after the map renders for the first time, we set the opacity to 1
+            canvas.style.opacity = 0;
+
             if (this.options.interactive) {
                 L.DomUtil.addClass(canvas, 'leaflet-interactive');
             }
