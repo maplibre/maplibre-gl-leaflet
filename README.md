@@ -7,7 +7,7 @@ This is a binding from [MapLibre GL JS](https://maplibre.org) to the familiar
 
 ```javascript
 var map = L.map("map", {
-    maxBounds: [[180, -540], [-180, 540]], // restrict bounds to avoid max latitude issues with MapLibre GL
+    maxBounds: [[180, -Infinity], [-180, Infinity]], // restrict bounds to avoid max latitude issues with MapLibre GL
     maxBoundsViscosity: 1, // make the max bounds "solid" so users cannot pan past them
   }).setView([38.912753, -77.032194], 15);
 
