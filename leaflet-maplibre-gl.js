@@ -126,7 +126,7 @@
         },
 
         _roundPoint: function (p) {
-            return {x: Math.round(p.x), y: Math.round(p.y)};
+            return { x: Math.round(p.x), y: Math.round(p.y) };
         },
 
         _initContainer: function () {
@@ -186,6 +186,13 @@
                 this._glMap.transform.maxValidLatitude = Infinity;
             }
 
+
+            // check for the existence of _helper and _latRange in MapLibre
+            // this supports MapLibre v5
+            if (this._glMap.transform._helper && this._glMap.transform._helper._latRange) {
+                this._glMap.transform._helper._latRange = [-Infinity, Infinity];
+            }
+
             this._transformGL(this._glMap);
 
             if (this._glMap._canvas.canvas) {
@@ -195,10 +202,12 @@
                 this._glMap._actualCanvas = this._glMap._canvas;
             }
 
+
             // treat child <canvas> element like L.ImageOverlay
             var canvas = this._glMap._actualCanvas;
             L.DomUtil.addClass(canvas, 'leaflet-image-layer');
             L.DomUtil.addClass(canvas, 'leaflet-zoom-animated');
+
             if (this.options.interactive) {
                 L.DomUtil.addClass(canvas, 'leaflet-interactive');
             }

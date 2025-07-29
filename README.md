@@ -6,11 +6,17 @@ This is a binding from [MapLibre GL JS](https://maplibre.org) to the familiar
 ## Code example
 
 ```javascript
-var map = L.map("map").setView([38.912753, -77.032194], 15);
+var map = L.map("map", {
+    maxBounds: [[180, -Infinity], [-180, Infinity]], // restrict bounds to avoid max latitude issues with MapLibre GL
+    maxBoundsViscosity: 1, // make the max bounds "solid" so users cannot pan past them
+    minZoom: 1 // prevent sync issues at zoom 0
+  }).setView([38.912753, -77.032194], 15);
+
 L.marker([38.912753, -77.032194])
   .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
   .addTo(map)
   .openPopup();
+
 var gl = L.maplibreGL({
   style: "mapbox://styles/mapbox/bright-v8",
 }).addTo(map);
@@ -72,6 +78,8 @@ Here are the main differences between a "pure" maplibre-gl-js map and a Leaflet 
 
 - No rotation / bearing / pitch support
 - Slower performances: When using maplibre-gl-leaflet, maplibre-gl-js is set as not interactive. Leaflet receives the touch/mouse events and updates the maplibre-gl-js map behind the scenes. Because maplibre-gl-js doesn't redraw as fast as Leaflet, the map can seem slower.
+- MapLibre restricts the maximum latitude of the map in a stricter way then Leaflet. In order to maximize compatibility it it is recommended to set a `maxBounds: [[180, -Infinity], [-180, Infinity]]` and `maxBoundsViscosity: 1` on your Leaflet `Map` to prevent users from panning past the minimum and maximum latitude supported by MapLibre.
+- Setting `minZoom: 1` is also recommended to reduce some issues with the map syncing at zoom level 0.
 
 On the bright side, the maplibre-gl-leaflet binding will allow you to use all the leaflet features and plugins.
 
