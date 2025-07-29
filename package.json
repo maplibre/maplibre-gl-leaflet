@@ -1,6 +1,6 @@
 {
   "name": "@maplibre/maplibre-gl-leaflet",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Supports adding Maplibre GL Web to a Leaflet Map as a layer",
   "main": "leaflet-maplibre-gl.js",
   "directories": {
