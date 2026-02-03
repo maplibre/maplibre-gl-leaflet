@@ -19,7 +19,7 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css' rel='stylesheet' />
 
     <!-- test data -->
-    <script src="https://www.mapbox.com/mapbox.js/assets/data/realworld.388.js"></script>
+    <script src="data/realworld.388.js"></script>
 </head>
 
 <body>
@@ -28,14 +28,13 @@
 <script src="../leaflet-maplibre-gl.js"></script>
 <script>
 
-var map = L.map('map', {maxZoom: 17}).setView([-37.821, 175.219], 16);
+var map = L.map('map', {maxZoom: 18}).setView([-37.821, 175.219], 16);
 
 var gl = L.maplibreGL({
-    // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    style: 'https://api.maptiler.com/maps/basic/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+    style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
 }).addTo(map);
 
-var markers = L.markerClusterGroup();
+var markers = L.markerClusterGroup({attribution: "Points &copy 2012 LINZ"});
 
 for (var i = 0; i < addressPoints.length; i++) {
     var a = addressPoints[i];

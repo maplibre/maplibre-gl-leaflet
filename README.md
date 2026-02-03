@@ -18,16 +18,7 @@ L.marker([38.912753, -77.032194])
   .openPopup();
 
 var gl = L.maplibreGL({
-  style: "mapbox://styles/mapbox/bright-v8",
-}).addTo(map);
-```
-
-Note that you can use any vector tile source useable by maplibre-gl. For instance, you can use [OSM2VectorTiles](http://osm2vectortiles.org/) with:
-
-```javascript
-var gl = L.maplibreGL({
-  style:
-    "https://api.maptiler.com/maps/topo/style.json?key=<YOUR_MAPTILER_API_KEY>",
+  style: 'https://demotiles.maplibre.org/style.json',
 }).addTo(map);
 ```
 
