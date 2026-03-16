@@ -22,6 +22,8 @@ var gl = L.maplibreGL({
 }).addTo(map);
 ```
 
+When switching MapLibre styles, the plugin automatically synchronizes the active style's source attributions with Leaflet's attribution control.
+
 Once you have created the leaflet layer, the maplibre-gl map object can be accessed using
 
 ```javascript

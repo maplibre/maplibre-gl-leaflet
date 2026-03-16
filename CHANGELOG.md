@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-### Added
+### Fixed
 
-- Add attribution handling to the Leaflet layer based on the `attributionControl` option and the source's `attribution` property
+- Fix attribution not updating when MapLibre styles or sources change
 
 ## 0.1.0
 
