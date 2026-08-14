@@ -37,7 +37,7 @@
 
   <script type="module">
     import * as L from 'leaflet';
-    import { maplibreGL } from '../dist/leaflet-maplibre-gl.mjs';
+    import { maplibreGL } from 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.2.0/dist/leaflet-maplibre-gl.mjs';
 
     var map = L.map('map', {
       maxBounds: [[180, -Infinity], [-180, Infinity]], // restrict bounds to avoid max latitude issues with MapLibre GL

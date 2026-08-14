@@ -1,6 +1,7 @@
 import { copyFile, mkdir } from 'node:fs/promises';
+import { defineConfig } from 'rolldown';
 
-var banner = '/* jshint -W030 */\n// Generated from src/leaflet-maplibre-gl.mjs. Run `npm run build` to update.';
+var banner = '/* jshint esversion: 6, -W008, -W030, -W083 */\n// Generated from src/leaflet-maplibre-gl.mjs. Run `npm run build` to update.';
 var copyTypes = {
     name: 'copy-types',
     closeBundle: async function () {
@@ -12,9 +13,12 @@ var copyTypes = {
     }
 };
 
-export default {
+export default defineConfig({
     input: 'src/leaflet-maplibre-gl.mjs',
     external: ['leaflet', 'maplibre-gl'],
+    transform: {
+        target: 'es2015'
+    },
     plugins: [copyTypes],
     output: [
         {
@@ -26,15 +30,16 @@ export default {
                 leaflet: 'L',
                 'maplibre-gl': 'maplibregl'
             },
-            interop: 'compat',
+            generatedCode: {
+                preset: 'es5'
+            },
             banner: banner
         },
         {
             file: 'dist/leaflet-maplibre-gl.mjs',
             format: 'es',
             exports: 'named',
-            interop: 'compat',
             banner: banner
         }
     ]
-};
+});
