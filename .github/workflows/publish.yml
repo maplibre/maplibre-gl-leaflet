@@ -13,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Use Node.js 20 x64
+      - name: Use Node.js 24 x64
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 24
           architecture: x64
           registry-url: 'https://registry.npmjs.org'
 
