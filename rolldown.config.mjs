@@ -8,7 +8,9 @@ var copyTypes = {
         await mkdir('dist', { recursive: true });
         await Promise.all([
             copyFile('src/leaflet-maplibre-gl.d.ts', 'dist/leaflet-maplibre-gl.d.ts'),
-            copyFile('src/leaflet-maplibre-gl.d.ts', 'dist/leaflet-maplibre-gl.d.mts')
+            copyFile('src/leaflet-maplibre-gl.d.ts', 'dist/leaflet-maplibre-gl.d.mts'),
+            copyFile('src/leaflet-maplibre-gl.d.ts', 'leaflet-maplibre-gl.d.ts'),
+            copyFile('dist/leaflet-maplibre-gl.js', 'leaflet-maplibre-gl.js')
         ]);
     }
 };

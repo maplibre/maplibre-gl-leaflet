@@ -124,7 +124,7 @@ var MaplibreGL = L.Layer.extend({
     },
 
     _getGLTransform: function (gl) {
-        return this._getGLCamera(gl).transform;
+        return gl.transform || this._getGLCamera(gl).transform;
     },
 
     _roundPoint: function (p) {
@@ -254,7 +254,13 @@ var MaplibreGL = L.Layer.extend({
             // MapLibre 5.0.0 and higher:
             tr.setCenter(maplibregl.LngLat.convert([center.lng, center.lat]));
             tr.setZoom(this._map.getZoom() - 1);
-            camera.transform.apply(tr);
+            if (camera.applyUpdatedTransform) {
+                // MapLibre 6 exposes the matching public camera update method.
+                camera.applyUpdatedTransform(tr);
+            } else {
+                // Preserve the MapLibre 5 update path.
+                camera.transform.apply(tr);
+            }
         } else {
             // maplibre < 5.0.0
             tr = gl.transform;

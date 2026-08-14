@@ -30,7 +30,7 @@ import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-g
 // MarkerCluster still uses Leaflet's browser global, so load the UMD adapter
 // after exposing MapLibre's ESM namespace alongside it.
 globalThis.maplibregl = maplibregl;
-await import('https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.2.0/dist/leaflet-maplibre-gl.js');
+await import('https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/dist/leaflet-maplibre-gl.js');
 
 var map = L.map('map', {maxZoom: 18}).setView([-37.821, 175.219], 16);
 

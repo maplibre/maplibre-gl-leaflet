@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- Move the published JavaScript and TypeScript artifacts into `dist/` and generate them during packing instead of tracking them in Git.
+- Add JavaScript and TypeScript artifacts under `dist/` while retaining the existing root UMD and declaration paths.
+- Generate package artifacts during installation and packing instead of tracking them in Git.
 - Build the distribution artifacts with Rolldown.
 
 ### Fixed
