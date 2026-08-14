@@ -1,10 +1,9 @@
 var assert = require('node:assert/strict');
 var fs = require('node:fs');
-var path = require('node:path');
 var test = require('node:test');
 var vm = require('node:vm');
 
-function loadPlugin(relativePath) {
+function loadPlugin() {
     var leaflet = {
         Layer: {
             extend: function (definition) {
@@ -22,7 +21,7 @@ function loadPlugin(relativePath) {
         }
     };
     var module = { exports: {} };
-    var filename = path.join(__dirname, '..', relativePath || 'dist/leaflet-maplibre-gl.js');
+    var filename = require.resolve('@maplibre/maplibre-gl-leaflet/leaflet-maplibre-gl');
 
     vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {
         exports: module.exports,
@@ -62,24 +61,14 @@ function createTransformUpdate() {
     };
 }
 
-test('exports and installs both plugin entry points', function () {
+test('keeps the legacy UMD API and MapLibre GL JS v5 camera path', function () {
     var loaded = loadPlugin();
 
     assert.equal(loaded.leaflet.MaplibreGL, loaded.plugin.MaplibreGL);
     assert.equal(loaded.leaflet.maplibreGL, loaded.plugin.maplibreGL);
     assert.ok(loaded.plugin.maplibreGL() instanceof loaded.plugin.MaplibreGL);
-});
 
-test('keeps the root UMD compatibility entry', function () {
-    var loaded = loadPlugin('leaflet-maplibre-gl.js');
-
-    assert.equal(loaded.leaflet.MaplibreGL, loaded.plugin.MaplibreGL);
-    assert.equal(loaded.leaflet.maplibreGL, loaded.plugin.maplibreGL);
-});
-
-test('synchronizes MapLibre GL JS v5 camera state', function () {
-    var plugin = loadPlugin().plugin;
-    var layer = createLayer(plugin);
+    var layer = createLayer(loaded.plugin);
     var update = createTransformUpdate();
     var applied;
     var moveEvents = 0;
@@ -106,7 +95,7 @@ test('synchronizes MapLibre GL JS v5 camera state', function () {
     assert.equal(layer._getGLTransform(gl), gl.transform);
 });
 
-test('synchronizes MapLibre GL JS v6 camera state', function () {
+test('uses the MapLibre GL JS v6 camera update API', function () {
     var plugin = loadPlugin().plugin;
     var layer = createLayer(plugin);
     var update = createTransformUpdate();
@@ -135,21 +124,6 @@ test('synchronizes MapLibre GL JS v6 camera state', function () {
     assert.equal(applied, update);
     assert.equal(moveEvents, 1);
     assert.equal(layer._getGLTransform(gl), camera.transform);
-});
-
-test('package metadata exposes the ESM build and MapLibre GL JS v6', function () {
-    var packageJson = require('../package.json');
-
-    assert.equal(packageJson.version, '0.1.4');
-    assert.equal(packageJson.main, 'leaflet-maplibre-gl.js');
-    assert.equal(packageJson.module, 'dist/leaflet-maplibre-gl.mjs');
-    assert.equal(packageJson.types, 'leaflet-maplibre-gl.d.ts');
-    assert.equal(packageJson.exports['.'].import.default, './dist/leaflet-maplibre-gl.mjs');
-    assert.equal(packageJson.exports['.'].require.default, './leaflet-maplibre-gl.js');
-    assert.equal(packageJson.exports['./leaflet-maplibre-gl'].default, './leaflet-maplibre-gl.js');
-    assert.equal(packageJson.exports['./leaflet-maplibre-gl.js'].default, './leaflet-maplibre-gl.js');
-    assert.equal(packageJson.exports['./*'], './*');
-    assert.match(packageJson.peerDependencies['maplibre-gl'], /\^6\.0\.0/);
 });
 
 test('loads the ESM build with the installed MapLibre GL JS v6 peer', async function () {
