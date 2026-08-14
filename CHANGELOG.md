@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Add attribution handling to the Leaflet layer based on the `attributionControl` option and the source's `attribution` property
+- Add an ESM build and package export for MapLibre GL JS v6.
+
+### Changed
+
+- Move the published JavaScript and TypeScript artifacts into `dist/`.
+
+### Fixed
+
+- Support the camera and transform layout introduced by MapLibre GL JS v6 while retaining compatibility with v2-v5.
 
 ## 0.1.0
 

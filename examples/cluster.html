@@ -10,8 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <!-- Maplibre GL -->
-    <link href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" rel='stylesheet' />
-    <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" rel='stylesheet' />
 
     <!-- Leaflet.MarkerCluster -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js'></script>
@@ -25,8 +24,13 @@
 <body>
 <div id="map"></div>
 
-<script src="../leaflet-maplibre-gl.js"></script>
-<script>
+<script type="module">
+import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs';
+
+// MarkerCluster still uses Leaflet's browser global, so load the UMD adapter
+// after exposing MapLibre's ESM namespace alongside it.
+globalThis.maplibregl = maplibregl;
+await import('../dist/leaflet-maplibre-gl.js');
 
 var map = L.map('map', {maxZoom: 18}).setView([-37.821, 175.219], 16);
 

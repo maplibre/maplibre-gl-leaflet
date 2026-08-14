@@ -1,16 +1,35 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD
-        define(['leaflet', 'maplibre-gl'], factory);
-    } else if (typeof exports === 'object') {
-        // Node, CommonJS-like
-        module.exports = factory(require('leaflet'), require('maplibre-gl'));
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory(root.L, root.maplibregl);
+/* jshint -W030 */
+// Generated from src/leaflet-maplibre-gl.mjs. Run `npm run build` to update.
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('leaflet'), require('maplibre-gl')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'leaflet', 'maplibre-gl'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.MaplibreGLLeaflet = {}, global.L, global.maplibregl));
+})(this, (function (exports, LeafletModule, maplibregl) { 'use strict';
+
+    function _interopNamespaceCompat(e) {
+        if (e && typeof e === 'object' && 'default' in e) return e;
+        var n = Object.create(null);
+        if (e) {
+            Object.keys(e).forEach(function (k) {
+                if (k !== 'default') {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () { return e[k]; }
+                    });
+                }
+            });
+        }
+        n.default = e;
+        return Object.freeze(n);
     }
-}(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maplibregl) {
-    L.MaplibreGL = L.Layer.extend({
+
+    var LeafletModule__namespace = /*#__PURE__*/_interopNamespaceCompat(LeafletModule);
+    var maplibregl__namespace = /*#__PURE__*/_interopNamespaceCompat(maplibregl);
+
+    var L = LeafletModule__namespace.default || LeafletModule__namespace;
+
+    var MaplibreGL = L.Layer.extend({
         options: {
             updateInterval: 32,
             // How much to extend the overlay view (relative to map size)
@@ -125,6 +144,15 @@
             return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane';
         },
 
+        // MapLibre GL JS v6 moved camera state off the Map instance.
+        _getGLCamera: function (gl) {
+            return gl._camera || gl;
+        },
+
+        _getGLTransform: function (gl) {
+            return this._getGLCamera(gl).transform;
+        },
+
         _roundPoint: function (p) {
             return { x: Math.round(p.x), y: Math.round(p.y) };
         },
@@ -156,7 +184,7 @@
                 attributionControl: false
             });
 
-            this._glMap = new maplibregl.Map(options);
+            this._glMap = new maplibregl__namespace.Map(options);
 
             var _map = this._map;
             var _currentAttribution = this.getAttribution();
@@ -172,25 +200,26 @@
             // allow GL base map to pan beyond min/max latitudes
             // Defensively check if properties are writable before setting them,
             // ensuring compatibility with both old and new versions of MapLibre GL JS.
-            var transformProto = Object.getPrototypeOf(this._glMap.transform);
+            var transform = this._getGLTransform(this._glMap);
+            var transformProto = Object.getPrototypeOf(transform);
 
             var latRangeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'latRange');
             if (!latRangeDescriptor || latRangeDescriptor.set || latRangeDescriptor.writable) {
-                this._glMap.transform.latRange = null;
+                transform.latRange = null;
             }
 
             // Although this property is obsolete in modern versions, we apply the same
             // defensive check for robust backward compatibility.
             var maxValidLatitudeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'maxValidLatitude');
             if (!maxValidLatitudeDescriptor || maxValidLatitudeDescriptor.set || maxValidLatitudeDescriptor.writable) {
-                this._glMap.transform.maxValidLatitude = Infinity;
+                transform.maxValidLatitude = Infinity;
             }
 
 
             // check for the existence of _helper and _latRange in MapLibre
             // this supports MapLibre v5
-            if (this._glMap.transform._helper && this._glMap.transform._helper._latRange) {
-                this._glMap.transform._helper._latRange = [-Infinity, Infinity];
+            if (transform._helper && transform._helper._latRange) {
+                transform._helper._latRange = [-Infinity, Infinity];
             }
 
             this._transformGL(this._glMap);
@@ -203,7 +232,7 @@
             }
 
 
-            // treat child <canvas> element like L.ImageOverlay
+            // treat child <canvas> element like leaflet.ImageOverlay
             var canvas = this._glMap._actualCanvas;
             L.DomUtil.addClass(canvas, 'leaflet-image-layer');
             L.DomUtil.addClass(canvas, 'leaflet-zoom-animated');
@@ -239,25 +268,27 @@
 
         _transformGL: function (gl) {
             var center = this._map.getCenter();
+            var camera = this._getGLCamera(gl);
 
             // gl.setView([center.lat, center.lng], this._map.getZoom() - 1, 0);
             // calling setView directly causes sync issues because it uses requestAnimFrame
 
-            var tr = gl._getTransformForUpdate(); // .clone() ?
+            var getTransformForUpdate = camera.getTransformForUpdate || camera._getTransformForUpdate;
+            var tr = getTransformForUpdate.call(camera); // .clone() ?
 
             if (tr.setCenter) {
-                // maplibre 5.0.0 and higher:
-                tr.setCenter(maplibregl.LngLat.convert([center.lng, center.lat]));
+                // MapLibre 5.0.0 and higher:
+                tr.setCenter(maplibregl__namespace.LngLat.convert([center.lng, center.lat]));
                 tr.setZoom(this._map.getZoom() - 1);
-                gl.transform.apply(tr);
+                camera.transform.apply(tr);
             } else {
                 // maplibre < 5.0.0
                 tr = gl.transform;
-                tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
+                tr.center = maplibregl__namespace.LngLat.convert([center.lng, center.lat]);
                 tr.zoom = this._map.getZoom() - 1;
             }
 
-            gl._fireMoveEvents();
+            camera._fireMoveEvents();
         },
 
         // update the map constantly during a pinch zoom
@@ -268,7 +299,7 @@
             });
         },
 
-        // borrowed from L.ImageOverlay
+        // borrowed from leaflet.ImageOverlay
         // https://github.com/Leaflet/Leaflet/blob/master/src/layer/ImageOverlay.js#L139-L144
         _animateZoom: function (e) {
             var scale = this._map.getZoomScale(e.zoom);
@@ -339,8 +370,19 @@
         }
     });
 
-    L.maplibreGL = function (options) {
-        return new L.MaplibreGL(options);
+    var maplibreGL = function (options) {
+        return new MaplibreGL(options);
     };
+
+    if (Object.isExtensible(L)) {
+        L.MaplibreGL = MaplibreGL;
+        L.maplibreGL = maplibreGL;
+    }
+
+    exports.MaplibreGL = MaplibreGL;
+    exports.default = maplibreGL;
+    exports.maplibreGL = maplibreGL;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

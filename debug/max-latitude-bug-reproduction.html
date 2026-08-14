@@ -16,20 +16,29 @@
   </style>
 
   <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <!-- Maplibre GL -->
-  <link href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" rel='stylesheet' />
-  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" rel='stylesheet' />
+
+  <script type="importmap">
+    {
+      "imports": {
+        "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+        "maplibre-gl": "https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs"
+      }
+    }
+  </script>
 
 </head>
 
 <body>
   <div id="map"></div>
 
-  <script src="../leaflet-maplibre-gl.js"></script>
-  <script>
+  <script type="module">
+    import * as L from 'leaflet';
+    import { maplibreGL } from '../dist/leaflet-maplibre-gl.mjs';
+
     var map = L.map('map').setView([0, 0], 2);
 
     L.marker([179, 0])
@@ -40,7 +49,7 @@
       .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
       .addTo(map)
 
-    var gl = L.maplibreGL({
+    var gl = maplibreGL({
       style: 'https://demotiles.maplibre.org/style.json'
     }).addTo(map);
   </script>

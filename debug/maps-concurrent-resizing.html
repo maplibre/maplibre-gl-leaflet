@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>OS Vector Tile | Leaflet</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/maplibre-gl@5.3.0/dist/maplibre-gl.js"></script>
-    <script src="../leaflet-maplibre-gl.js"></script>
 
     <style>
         body {
@@ -140,8 +138,13 @@
 <div id="map" style="width:50%; height:50%"></div>
 
 
-<script>
-    var L;
+<script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs';
+
+    globalThis.maplibregl = maplibregl;
+    await import('../dist/leaflet-maplibre-gl.js');
+
+    var L = globalThis.L;
     (function (L) {
         if (typeof L === 'undefined') {
             throw new Error('Leaflet must be included first');
