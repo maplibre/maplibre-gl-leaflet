@@ -2,8 +2,8 @@ import { copyFile, mkdir } from 'node:fs/promises';
 import { defineConfig } from 'rolldown';
 
 var banner = '/* jshint esversion: 6, -W008, -W030, -W083 */\n// Generated from src/leaflet-maplibre-gl.mjs. Run `npm run build` to update.';
-var copyTypes = {
-    name: 'copy-types',
+var copyArtifacts = {
+    name: 'copy-artifacts',
     closeBundle: async function () {
         await mkdir('dist', { recursive: true });
         await Promise.all([
@@ -21,7 +21,7 @@ export default defineConfig({
     transform: {
         target: 'es2015'
     },
-    plugins: [copyTypes],
+    plugins: [copyArtifacts],
     output: [
         {
             file: 'dist/leaflet-maplibre-gl.js',

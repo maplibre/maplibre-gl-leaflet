@@ -14,12 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Add JavaScript and TypeScript artifacts under `dist/` while retaining the existing root UMD and declaration paths.
-- Generate package artifacts during installation and packing instead of tracking them in Git.
+- Generate package artifacts before packing instead of tracking them in Git.
 - Build the distribution artifacts with Rolldown.
 
 ### Fixed
 
-- Support the camera and transform layout introduced by MapLibre GL JS v6 while retaining compatibility with v2-v5.
+- Support MapLibre GL JS v6 while retaining compatibility with v2-v5.
 
 ## 0.1.0
 

@@ -41,7 +41,6 @@
   },
   "scripts": {
     "build": "rolldown --config rolldown.config.mjs",
-    "prepare": "npm run build",
     "prepack": "npm run build",
     "typecheck": "tsc --project test/tsconfig.json",
     "test": "npm run build && jshint dist/leaflet-maplibre-gl.js && npm run typecheck && node --test test/compatibility.test.js"

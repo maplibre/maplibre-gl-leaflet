@@ -13,13 +13,7 @@ function loadPlugin() {
             }
         }
     };
-    var maplibregl = {
-        LngLat: {
-            convert: function (center) {
-                return center;
-            }
-        }
-    };
+    var maplibregl = {};
     var module = { exports: {} };
     var filename = require.resolve('@maplibre/maplibre-gl-leaflet/leaflet-maplibre-gl');
 
@@ -27,7 +21,11 @@ function loadPlugin() {
         exports: module.exports,
         module: module,
         require: function (name) {
-            return name === 'leaflet' ? leaflet : maplibregl;
+            if (name === 'leaflet') {
+                return leaflet;
+            }
+            assert.equal(name, 'maplibre-gl');
+            return maplibregl;
         }
     });
 
@@ -50,18 +48,7 @@ function createLayer(plugin) {
     return layer;
 }
 
-function createTransformUpdate() {
-    return {
-        setCenter: function (center) {
-            this.center = center;
-        },
-        setZoom: function (zoom) {
-            this.zoom = zoom;
-        }
-    };
-}
-
-test('keeps the legacy UMD API and MapLibre GL JS v5 camera path', function () {
+test('keeps the existing UMD API and updates MapLibre through jumpTo', function () {
     var loaded = loadPlugin();
 
     assert.equal(loaded.leaflet.MaplibreGL, loaded.plugin.MaplibreGL);
@@ -69,61 +56,17 @@ test('keeps the legacy UMD API and MapLibre GL JS v5 camera path', function () {
     assert.ok(loaded.plugin.maplibreGL() instanceof loaded.plugin.MaplibreGL);
 
     var layer = createLayer(loaded.plugin);
-    var update = createTransformUpdate();
-    var applied;
-    var moveEvents = 0;
+    var view;
     var gl = {
-        transform: {
-            apply: function (transform) {
-                applied = transform;
-            }
-        },
-        _getTransformForUpdate: function () {
-            return update;
-        },
-        _fireMoveEvents: function () {
-            moveEvents++;
+        jumpTo: function (options) {
+            view = options;
         }
     };
 
     layer._transformGL(gl);
 
-    assert.deepEqual(Array.from(update.center), [7, 46]);
-    assert.equal(update.zoom, 8);
-    assert.equal(applied, update);
-    assert.equal(moveEvents, 1);
-    assert.equal(layer._getGLTransform(gl), gl.transform);
-});
-
-test('uses the MapLibre GL JS v6 camera update API', function () {
-    var plugin = loadPlugin().plugin;
-    var layer = createLayer(plugin);
-    var update = createTransformUpdate();
-    var applied;
-    var moveEvents = 0;
-    var camera = {
-        transform: {
-            marker: 'v6-transform'
-        },
-        getTransformForUpdate: function () {
-            return update;
-        },
-        applyUpdatedTransform: function (transform) {
-            applied = transform;
-        },
-        _fireMoveEvents: function () {
-            moveEvents++;
-        }
-    };
-    var gl = { _camera: camera };
-
-    layer._transformGL(gl);
-
-    assert.deepEqual(Array.from(update.center), [7, 46]);
-    assert.equal(update.zoom, 8);
-    assert.equal(applied, update);
-    assert.equal(moveEvents, 1);
-    assert.equal(layer._getGLTransform(gl), camera.transform);
+    assert.deepEqual(Array.from(view.center), [7, 46]);
+    assert.equal(view.zoom, 8);
 });
 
 test('loads the ESM build with the installed MapLibre GL JS v6 peer', async function () {
@@ -146,7 +89,7 @@ test('loads the ESM build with the installed MapLibre GL JS v6 peer', async func
 
     try {
         var plugin = await import('@maplibre/maplibre-gl-leaflet');
-        var maplibreVersion = require('../node_modules/maplibre-gl/package.json').version;
+        var maplibreVersion = require('maplibre-gl/package.json').version;
 
         assert.equal(typeof plugin.MaplibreGL, 'function');
         assert.equal(typeof plugin.maplibreGL, 'function');

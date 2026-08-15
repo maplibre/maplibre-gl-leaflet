@@ -55,7 +55,7 @@ var MaplibreGL = L.Layer.extend({
     getEvents: function () {
         return {
             move: this._throttledUpdate, // sensibly throttle updating while panning
-            zoomanim: this._animateZoom, // applys the zoom animation to the <canvas>
+            zoomanim: this._animateZoom, // applies the zoom animation to the <canvas>
             zoom: this._pinchZoom, // animate every zoom event for smoother pinch-zooming
             zoomstart: this._zoomStart, // flag starting a zoom to disable panning
             zoomend: this._zoomEnd,
@@ -118,15 +118,6 @@ var MaplibreGL = L.Layer.extend({
         return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane';
     },
 
-    // MapLibre GL JS v6 moved camera state off the Map instance.
-    _getGLCamera: function (gl) {
-        return gl._camera || gl;
-    },
-
-    _getGLTransform: function (gl) {
-        return gl.transform || this._getGLCamera(gl).transform;
-    },
-
     _roundPoint: function (p) {
         return { x: Math.round(p.x), y: Math.round(p.y) };
     },
@@ -171,29 +162,28 @@ var MaplibreGL = L.Layer.extend({
             }
         });
 
-        // allow GL base map to pan beyond min/max latitudes
-        // Defensively check if properties are writable before setting them,
-        // ensuring compatibility with both old and new versions of MapLibre GL JS.
-        var transform = this._getGLTransform(this._glMap);
-        var transformProto = Object.getPrototypeOf(transform);
+        // Allow the GL map to follow Leaflet beyond the usual latitude range.
+        if (this._glMap.setTransformConstrain) {
+            this._glMap.setTransformConstrain(function (center, zoom) {
+                return { center: center, zoom: zoom };
+            });
+        } else {
+            var transform = this._glMap.transform;
+            var transformProto = Object.getPrototypeOf(transform);
 
-        var latRangeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'latRange');
-        if (!latRangeDescriptor || latRangeDescriptor.set || latRangeDescriptor.writable) {
-            transform.latRange = null;
-        }
+            var latRangeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'latRange');
+            if (!latRangeDescriptor || latRangeDescriptor.set || latRangeDescriptor.writable) {
+                transform.latRange = null;
+            }
 
-        // Although this property is obsolete in modern versions, we apply the same
-        // defensive check for robust backward compatibility.
-        var maxValidLatitudeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'maxValidLatitude');
-        if (!maxValidLatitudeDescriptor || maxValidLatitudeDescriptor.set || maxValidLatitudeDescriptor.writable) {
-            transform.maxValidLatitude = Infinity;
-        }
+            var maxValidLatitudeDescriptor = Object.getOwnPropertyDescriptor(transformProto, 'maxValidLatitude');
+            if (!maxValidLatitudeDescriptor || maxValidLatitudeDescriptor.set || maxValidLatitudeDescriptor.writable) {
+                transform.maxValidLatitude = Infinity;
+            }
 
-
-        // check for the existence of _helper and _latRange in MapLibre
-        // this supports MapLibre v5
-        if (transform._helper && transform._helper._latRange) {
-            transform._helper._latRange = [-Infinity, Infinity];
+            if (transform._helper && transform._helper._latRange) {
+                transform._helper._latRange = [-Infinity, Infinity];
+            }
         }
 
         this._transformGL(this._glMap);
@@ -242,33 +232,10 @@ var MaplibreGL = L.Layer.extend({
 
     _transformGL: function (gl) {
         var center = this._map.getCenter();
-        var camera = this._getGLCamera(gl);
-
-        // gl.setView([center.lat, center.lng], this._map.getZoom() - 1, 0);
-        // calling setView directly causes sync issues because it uses requestAnimFrame
-
-        var getTransformForUpdate = camera.getTransformForUpdate || camera._getTransformForUpdate;
-        var tr = getTransformForUpdate.call(camera); // .clone() ?
-
-        if (tr.setCenter) {
-            // MapLibre 5.0.0 and higher:
-            tr.setCenter(maplibregl.LngLat.convert([center.lng, center.lat]));
-            tr.setZoom(this._map.getZoom() - 1);
-            if (camera.applyUpdatedTransform) {
-                // MapLibre 6 exposes the matching public camera update method.
-                camera.applyUpdatedTransform(tr);
-            } else {
-                // Preserve the MapLibre 5 update path.
-                camera.transform.apply(tr);
-            }
-        } else {
-            // maplibre < 5.0.0
-            tr = gl.transform;
-            tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
-            tr.zoom = this._map.getZoom() - 1;
-        }
-
-        camera._fireMoveEvents();
+        gl.jumpTo({
+            center: [center.lng, center.lat],
+            zoom: this._map.getZoom() - 1
+        });
     },
 
     // update the map constantly during a pinch zoom
