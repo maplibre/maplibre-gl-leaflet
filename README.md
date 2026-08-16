@@ -6,6 +6,9 @@ This is a binding from [MapLibre GL JS](https://maplibre.org) to the familiar
 ## Code example
 
 ```javascript
+import * as L from 'leaflet';
+import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
+
 var map = L.map("map", {
     maxBounds: [[180, -Infinity], [-180, Infinity]], // restrict bounds to avoid max latitude issues with MapLibre GL
     maxBoundsViscosity: 1, // make the max bounds "solid" so users cannot pan past them
@@ -17,7 +20,7 @@ L.marker([38.912753, -77.032194])
   .addTo(map)
   .openPopup();
 
-var gl = L.maplibreGL({
+var gl = maplibreGL({
   style: 'https://demotiles.maplibre.org/style.json',
 }).addTo(map);
 ```
@@ -42,24 +45,55 @@ Code for these examples is hosted in the [examples folder](https://github.com/ma
 
 ## Installation
 
-Add a script tag referencing maplibre-gl-leaflet after adding leaflet and maplibre-gl-js in your website:
+### Package manager and bundler
+
+Install the adapter with Leaflet and MapLibre GL JS:
+
+```shell
+npm install leaflet maplibre-gl @maplibre/maplibre-gl-leaflet
+```
+
+MapLibre GL JS v6 is ESM-only. Import the adapter from the package root:
+
+```javascript
+import * as L from 'leaflet';
+import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'maplibre-gl/dist/maplibre-gl.css';
+```
+
+Before creating the layer, follow MapLibre's [worker setup instructions for your bundler](https://maplibre.org/maplibre-gl-js/docs/#installation).
+
+### Direct browser usage
+
+For a direct browser setup, use import maps to resolve the adapter's dependencies:
 
 ```html
-<!-- Leaflet -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
-<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
-
-<!-- Maplibre GL -->
 <link
-  href="https://unpkg.com/maplibre-gl@2.2.1/dist/maplibre-gl.css"
+  href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css"
   rel="stylesheet"
 />
-<script src="https://unpkg.com/maplibre-gl@2.2.1/dist/maplibre-gl.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+      "maplibre-gl": "https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs"
+    }
+  }
+</script>
+<script type="module">
+  import * as L from 'leaflet';
+  import { maplibreGL } from 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/dist/leaflet-maplibre-gl.mjs';
 
-<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
+  var map = L.map('map').setView([38.912753, -77.032194], 2);
+  maplibreGL({
+    style: 'https://demotiles.maplibre.org/style.json'
+  }).addTo(map);
+</script>
 ```
 
 ## Motivation

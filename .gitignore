@@ -26,6 +26,11 @@ build/Release
 # Dependency directory
 node_modules
 
+# Generated package artifacts
+/dist/
+/leaflet-maplibre-gl.js
+/leaflet-maplibre-gl.d.ts
+
 # Optional npm cache directory
 .npm
 

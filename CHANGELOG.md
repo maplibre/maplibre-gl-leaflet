@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## 0.1.4 - 2026-08-16
 
 ### Added
 
-- Add attribution handling to the Leaflet layer based on the `attributionControl` option and the source's `attribution` property
+- Add support for MapLibre GL JS v6 through a new ESM build, while retaining existing UMD integrations and support for MapLibre GL JS v2-v5.
+
+### Changed
+
+- Generate release artifacts when packaging instead of tracking them in Git.
 
 ## 0.1.0
 

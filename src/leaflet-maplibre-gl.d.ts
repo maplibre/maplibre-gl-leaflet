@@ -7,14 +7,18 @@ declare module 'leaflet' {
 
     class MaplibreGL extends L.Layer {
         constructor(options: LeafletMaplibreGLOptions);
-        getMaplibreMap(): LibreGLMap
-        getCanvas(): HTMLCanvasElement
-        getSize(): L.Point
-        getBounds(): L.LatLngBounds
-        getContainer(): HTMLDivElement
-        getPaneName(): string
+        getMaplibreMap(): LibreGLMap;
+        getCanvas(): HTMLCanvasElement;
+        getSize(): L.Point;
+        getBounds(): L.LatLngBounds;
+        getContainer(): HTMLDivElement;
+        getPaneName(): string;
     }
 
     function maplibreGL(options: LeafletMaplibreGLOptions): MaplibreGL;
 
 }
+
+export const MaplibreGL: typeof L.MaplibreGL;
+export const maplibreGL: typeof L.maplibreGL;
+export default maplibreGL;

@@ -13,17 +13,26 @@
     </style>
 
     <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <!-- Maplibre GL -->
-    <link href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" rel='stylesheet' />
-    <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" rel='stylesheet' />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+          "maplibre-gl": "https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs"
+        }
+      }
+    </script>
   </head>
   <body>
   <div id="map"></div>
-  <script src="../leaflet-maplibre-gl.js"></script>
-  <script>
+  <script type="module">
+  import * as L from 'leaflet';
+  import { maplibreGL } from 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/dist/leaflet-maplibre-gl.mjs';
+
   var leafletMap = L.map('map').setView([38.912753, -77.032194], 2);
 
   L.marker([38.912753, -77.032194])
@@ -31,7 +40,7 @@
     .addTo(leafletMap)
     .openPopup();
 
-  var gl = L.maplibreGL({
+  var gl = maplibreGL({
     padding: 0.1,
     style: 'https://demotiles.maplibre.org/style.json',
     interactive: true

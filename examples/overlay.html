@@ -3,13 +3,18 @@
 	<title>Leaflet debug page</title>
 
   <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <!-- Maplibre GL -->
-  <link href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" rel='stylesheet' />
-  <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js"></script>
-  <script src="../leaflet-maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" rel='stylesheet' />
+  <script type="importmap">
+    {
+      "imports": {
+        "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js",
+        "maplibre-gl": "https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs"
+      }
+    }
+  </script>
   <style>
     html, body, #map {
       width: 100%;
@@ -22,9 +27,12 @@
 
 	<div id="map"></div>
 
-	<script>
+	<script type="module">
+    import * as L from 'leaflet';
+    import { maplibreGL } from 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/dist/leaflet-maplibre-gl.mjs';
+
     var map = new L.Map('map');
-		var gl = L.maplibreGL({
+		var gl = maplibreGL({
       style: 'https://demotiles.maplibre.org/style.json'
     }).addTo(map);
 
