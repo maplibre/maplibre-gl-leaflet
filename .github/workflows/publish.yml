@@ -6,6 +6,10 @@ on:
     tags:
       - v*
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   publish:
     name: Publish
@@ -26,6 +30,4 @@ jobs:
 
       - name: Publish
         run: |
-          npm publish --access=public --non-interactive
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ORG_TOKEN }}
+          npm publish --access=public
