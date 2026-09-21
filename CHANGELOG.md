@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Fixed
+
+- `onRemove` no longer throws for a layer whose MapLibre map never initialised (for example when the browser refuses a WebGL context and `new maplibregl.Map()` throws inside `onAdd`). Leaflet registers the layer before `onAdd` runs, so it still asks the half-built layer to remove itself.
+
 ## 0.1.4 - 2026-08-16
 
 ### Added

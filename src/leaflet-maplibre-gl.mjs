@@ -48,7 +48,12 @@ var MaplibreGL = L.Layer.extend({
         var paneName = this.getPaneName();
         map.getPane(paneName).removeChild(this._container);
 
-        this._glMap.remove();
+        // Leaflet registers the layer before onAdd runs, so a MapLibre
+        // constructor that throws (for example when WebGL is unavailable)
+        // leaves a layer without a GL map that Leaflet still asks to remove.
+        if (this._glMap) {
+            this._glMap.remove();
+        }
         this._glMap = null;
     },
 
