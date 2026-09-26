@@ -114,6 +114,71 @@ test('removes an initialised GL map exactly once', function () {
     assert.equal(layer._glMap, null);
 });
 
+function createResizingLayer(loaded) {
+    var frames = [];
+    var views = [];
+    var point = {
+        subtract: function () { return point; },
+        multiplyBy: function () { return point; }
+    };
+    loaded.leaflet.Util = {
+        bind: function (fn, context) { return fn.bind(context); },
+        requestAnimFrame: function (fn, context) { frames.push(fn.bind(context)); }
+    };
+    loaded.leaflet.DomUtil = { setTransform: function () {} };
+
+    var layer = Object.create(loaded.plugin.MaplibreGL.prototype);
+    layer.options = { padding: 0.1 };
+    layer._container = { style: {} };
+    layer._map = {
+        getZoom: function () { return 9; },
+        getCenter: function () { return { lng: 7, lat: 46 }; },
+        getBounds: function () { return { getNorthWest: function () { return {}; } }; },
+        getSize: function () { return point; },
+        getZoomScale: function () { return 1; },
+        latLngToContainerPoint: function () { return point; }
+    };
+    layer._glMap = {
+        _actualCanvas: {},
+        once: function () {},
+        jumpTo: function (options) { views.push(options); }
+    };
+    return { layer: layer, frames: frames, views: views };
+}
+
+test('realigns MapLibre in the frame a resize schedules', function () {
+    var resizing = createResizingLayer(loadPlugin());
+
+    resizing.layer._resize();
+    assert.equal(resizing.frames.length, 1);
+    resizing.frames[0]();
+
+    assert.equal(resizing.views.length, 1);
+    assert.equal(resizing.views[0].zoom, 8);
+});
+
+test('ignores a resize frame that runs after the layer was removed', function () {
+    var resizing = createResizingLayer(loadPlugin());
+
+    resizing.layer._resize();
+    // Leaflet's removeLayer nulls _map after onRemove has dropped _glMap; the frame is already queued.
+    resizing.layer._glMap = null;
+    resizing.layer._map = null;
+
+    assert.doesNotThrow(resizing.frames[0]);
+    assert.equal(resizing.views.length, 0);
+});
+
+test('ignores a zoom end that arrives after the layer was removed', function () {
+    var resizing = createResizingLayer(loadPlugin());
+    resizing.layer._glMap = null;
+    resizing.layer._map = null;
+
+    assert.doesNotThrow(function () {
+        resizing.layer._zoomEnd();
+    });
+});
+
 test('loads the ESM build with the installed MapLibre GL JS v6 peer', async function () {
     var previousWindow = global.window;
     var previousDocument = global.document;

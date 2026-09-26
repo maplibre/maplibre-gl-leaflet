@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - `onRemove` no longer throws for a layer whose MapLibre map never initialised (for example when the browser refuses a WebGL context and `new maplibregl.Map()` throws inside `onAdd`). Leaflet registers the layer before `onAdd` runs, so it still asks the half-built layer to remove itself.
+- A `resize` or zoom `transitionend` frame that runs after the layer was removed no longer throws `Cannot read properties of null (reading 'getZoom')`: the deferred body of `_transitionEnd`, and `_zoomEnd`, now return when the layer has no map ([#67](https://github.com/maplibre/maplibre-gl-leaflet/issues/67)).
 
 ## 0.1.4 - 2026-08-16
 
