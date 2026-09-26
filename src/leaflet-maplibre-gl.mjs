@@ -278,6 +278,9 @@ var MaplibreGL = L.Layer.extend({
     },
 
     _zoomEnd: function () {
+        // Same guard as _update: a removed layer has no map to align.
+        if (!this._map || !this._glMap) { return; }
+
         var scale = this._map.getZoomScale(this._map.getZoom());
 
         L.DomUtil.setTransform(
@@ -294,6 +297,9 @@ var MaplibreGL = L.Layer.extend({
 
     _transitionEnd: function (e) {
         L.Util.requestAnimFrame(function () {
+            // The layer can be removed between the event and this frame, which leaves _map and _glMap null.
+            if (!this._map || !this._glMap) { return; }
+
             var zoom = this._map.getZoom();
             var center = this._map.getCenter();
             var offset = this._map.latLngToContainerPoint(
