@@ -278,6 +278,9 @@ var MaplibreGL = L.Layer.extend({
     },
 
     _zoomEnd: function () {
+        if (!this._map || !this._glMap) {
+            return;
+        }
         var scale = this._map.getZoomScale(this._map.getZoom());
 
         L.DomUtil.setTransform(
@@ -294,6 +297,10 @@ var MaplibreGL = L.Layer.extend({
 
     _transitionEnd: function (e) {
         L.Util.requestAnimFrame(function () {
+            // The layer may have been removed while the frame was queued
+            if (!this._map || !this._glMap) {
+                return;
+            }
             var zoom = this._map.getZoom();
             var center = this._map.getCenter();
             var offset = this._map.latLngToContainerPoint(
