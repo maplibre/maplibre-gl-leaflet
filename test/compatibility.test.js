@@ -148,3 +148,27 @@ test('loads the ESM build with the installed MapLibre GL JS v6 peer', async func
         }
     }
 });
+
+test('deduplicates identical attributions across style sources', function () {
+    var layer = createLayer(loadPlugin().plugin);
+    layer.options = {};
+    layer._glMap = {
+        getStyle: function () {
+            return { sources: { a: {}, b: {}, c: {}, d: {} } };
+        },
+        getSource: function (id) {
+            var attributions = {
+                a: 'OpenFreeMap © OpenMapTiles Data from OpenStreetMap',
+                b: 'OpenFreeMap © OpenMapTiles Data from OpenStreetMap',
+                c: 'Other attribution',
+                d: null
+            };
+            return { attribution: attributions[id] };
+        }
+    };
+
+    assert.equal(
+        layer.getAttribution(),
+        'OpenFreeMap © OpenMapTiles Data from OpenStreetMap, Other attribution'
+    );
+});

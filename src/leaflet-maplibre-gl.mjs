@@ -86,6 +86,10 @@ var MaplibreGL = L.Layer.extend({
                         return (source && typeof source.attribution === 'string') ? source.attribution.trim() : null;
                     })
                     .filter(Boolean) // Remove null/undefined values
+                    .filter(function (attribution, index, attributions) {
+                        // Deduplicate identical attributions from multiple sources
+                        return attributions.indexOf(attribution) === index;
+                    })
                     .join(', ');
             }
         }
