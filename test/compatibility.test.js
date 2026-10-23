@@ -11,6 +11,12 @@ function loadPlugin() {
                 Layer.prototype = definition;
                 return Layer;
             }
+        },
+        Util: {
+            // Runs the callback synchronously so tests can assert on it
+            requestAnimFrame: function (fn, context) {
+                fn.call(context);
+            }
         }
     };
     var maplibregl = {};
@@ -147,4 +153,26 @@ test('loads the ESM build with the installed MapLibre GL JS v6 peer', async func
             delete global.navigator;
         }
     }
+});
+
+test('does not throw when zoomEnd runs after the layer was removed', function () {
+    var layer = createLayer(loadPlugin().plugin);
+    layer._map = null;
+    layer._glMap = null;
+
+    assert.doesNotThrow(function () {
+        layer._zoomEnd();
+    });
+});
+
+test('does not throw when a queued transition frame runs after removal', function () {
+    var layer = createLayer(loadPlugin().plugin);
+    // Leaflet's removeLayer() nulls _map and onRemove() nulls _glMap while a
+    // requestAnimFrame callback may still be queued.
+    layer._map = null;
+    layer._glMap = null;
+
+    assert.doesNotThrow(function () {
+        layer._transitionEnd();
+    });
 });
